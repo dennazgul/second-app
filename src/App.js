@@ -4,23 +4,31 @@ import './App.css';
 class NameForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: 'fefef' };
+    this.state = { login: '', password: '' };
+    this.loginForm = { able: false }
   }
-  handleTextareaChange(event) {
-    this.setState({ value: event.target.value });
+  loginPasswordForm() {
+    return (
+      <div>
+        <input value={this.state.login} name="login" placeholder="введите логин" onChange={this.handleTextareaChange} cols="40" rows="3"></input>
+        <input value={this.state.password} name="password" placeholder="введите пароль" onChange={this.handleTextareaChange} cols="40" rows="3"></input>
+      </div>
+    )
   }
+  ablerFunc = () => {
+    this.setState({ able: this.loginForm.able = !this.loginForm.able });
+  }
+  handleTextareaChange = (event) =>
+    this.setState({ [event.target.name]: event.target.value })
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <div className="App-logo">
-            <textarea value={this.state.value} name="comment" onChange={this.handleTextareaChange} cols="40" rows="3"></textarea>
+          <div>
           </div>
-          <span>
-            <a href="https://google.com"
-              className="App-link">
-              Вход</a>
-          </span>
+          <div><span className="App-link" onClick={this.ablerFunc}>Вход</span>
+          {this.loginForm.able && this.loginPasswordForm()}
+          </div>
           <span>
             <a href="https://google.com"
               className="App-link">
