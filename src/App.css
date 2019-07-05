@@ -1,7 +1,12 @@
 .App {
   text-align: center;
+  background-color: #83aef2;
+  height: 100%;
 }
-
+.homePage {
+  height: 100px;
+  background-color: #42d7f5;
+}
 
 .App-header {
   display:grid;
@@ -14,4 +19,24 @@
 .App-link {
   color: #61dafb;
   text-decoration: none;
+}
+.screenText {
+  color: white;
+  text-decoration: none;
+}
+.representText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.11em;
+}
+.App-body {
+  background-color: #83aef2;
+  height: 100%;
+}
+.registrationForm {
+  font-size: 1.25em;
+}
+input::placeholder {
+  font-size: 1.25em;
 }

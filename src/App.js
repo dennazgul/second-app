@@ -1,43 +1,41 @@
 import React from 'react';
 import './App.css';
+import { Link, BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Registration from './components/Registration';
+import Login from './components/Login';
+import Home from './components/Home';
 
-class NameForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { login: '', password: '' };
-    this.loginForm = { able: false }
-  }
-  loginPasswordForm() {
-    return (
-      <div>
-        <input value={this.state.login} name="login" placeholder="введите логин" onChange={this.handleTextareaChange} cols="40" rows="3"></input>
-        <input value={this.state.password} name="password" placeholder="введите пароль" onChange={this.handleTextareaChange} cols="40" rows="3"></input>
-      </div>
-    )
-  }
-  ablerFunc = () => {
-    this.setState({ able: this.loginForm.able = !this.loginForm.able });
-  }
-  handleTextareaChange = (event) =>
-    this.setState({ [event.target.name]: event.target.value })
-  render() {
-    return (
+
+
+function App() {
+  return (
+    <Router>
       <div className="App">
         <header className="App-header">
-          <div>
+          <div className="representText">
+            <Link to="/">
+              <span className="screenText representText">Тестовый проект (чтобы разобраться с React)
+            <img src={require('./assets/image.png')} width="36px"></img>
+              </span>
+            </Link>
           </div>
-          <div><span className="App-link" onClick={this.ablerFunc}>Вход</span>
-          {this.loginForm.able && this.loginPasswordForm()}
-          </div>
-          <span>
-            <a href="https://google.com"
-              className="App-link">
+          <Link to="/login">
+            <span className="App-link" >Вход</span>
+          </Link>
+          <Link to="/registration">
+            <span className="App-link">
               Регистрация
-          </a>
           </span>
+          </Link>
         </header>
+        <div class="App-body">
+          <div>
+            <Route path="/" exact component={Home} /><Route path="/registration" component={Registration} />
+            <Route path="/login" component={Login} />
+          </div>
+        </div>
       </div>
-    );
-  }
+    </Router>
+  );
 }
-export default NameForm;
+export default App;
