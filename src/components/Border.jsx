@@ -8,27 +8,37 @@ import InProgressTable from './InProgressTable';
 import Register from './Register';
 
 // Создаётся объект promise
-let promise = new Promise((resolve, reject) => {
+/*function httpGet(url) {
 
-  setTimeout(() => {
-    // переведёт промис в состояние fulfilled с результатом "result"
-    reject("result");
-  }, 1000);
+  return new Promise(function(resolve, reject) {
 
-});
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
 
-// promise.then навешивает обработчики на успешный результат или ошибку
-promise
-  .then(
-    result => {
-      // первая функция-обработчик - запустится при вызове resolve
-      alert("Fulfilled: " + result); // result - аргумент resolve
-    },
-    error => {
-      // вторая функция - запустится при вызове reject
-      alert("Rejected: " + error); // error - аргумент reject
+    xhr.onload = function() {
+      if (this.status == 200) {
+        resolve(this.response);
+      } else {
+        var error = new Error(this.statusText);
+        error.code = this.status;
+        reject(error);
+      }
     }
-  );
+    
+
+    xhr.onerror = function() {
+      reject(new Error("Network Error"));
+    };
+
+    xhr.send();
+  });
+
+};
+httpGet("/dfgfhrtfjrthjrt jrtj rtyty tyjtyj")
+  .then(
+    response => alert(`Fulfilled:`),
+    error => alert(`Rejected:`)
+  );*/
 function Border() {
     return (<div>
         <header>

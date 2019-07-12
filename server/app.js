@@ -3,6 +3,8 @@ const app = express();
 const cors = require('cors')
 const bodyParser = require('body-parser');
 
+const runSequelize = require('../server/sequelize');
+
 
 app.use(bodyParser.json(), cors());
 
@@ -20,6 +22,8 @@ app.post('/register', ((req, res) => {
     res.send();
 }))
 
-app.listen(1488,  ()=> {
+runSequelize();
+
+app.listen(1488, () => {
     console.log('Example app listening on port 5000!');
 });
