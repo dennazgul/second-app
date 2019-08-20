@@ -25,10 +25,15 @@
 .ideasTable {
   border-radius: 8px;
   padding: 8px;
-  background-color: #bdb9ae 
+  background-color: #bdb9ae;
 }
 .tableContent {
   border-radius: 8px;
   padding: 3px;
   background-color: #969695;
+  margin-bottom: 8px; 
+}
+.keyAndButton {
+  display: grid;
+  grid-template-columns: 5fr 1fr;
 }

@@ -1,4 +1,4 @@
-const baseUrl = 'localhost:5000';
+const baseUrl = 'http://localhost:1488';
 
 export const REGISTER = baseUrl + '/register';
 

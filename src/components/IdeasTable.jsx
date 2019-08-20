@@ -5,71 +5,69 @@ import IdeasTableText from './IdeasTableText';
 import { BrowserRouter as Route } from "react-router-dom";
 import axios from 'axios';
 import { REGISTER } from '../constants/urlConstsants';
+import { reject } from 'q';
 
 class IdeasTable extends React.Component {
     constructor(props) {
         super(props);
+        this.keyCreator = 1;
         this.state = {
-            postArray: [{ key: 1, value: '1234' }, { key: 2, value: '1324234' }, { key: 3, value: '145675674' }],
+            postArray: [],
+            head: '',
             body: ''
         };
+
     }
+
     setIdea = (event) => {
         this.setState({ body: event.target.value })
     }
-
-
-    addIdea = (event) => {
-        //const copy = Object.assign([], this.state.postArray)
-        //copy.push(this.state.Body)
-        //this.state.Body = '' Варик из видоса
-        this.state.postArray.push(this.state.body)
-        //this.state.Body = ''; //мой варик this.state.postArray.push(this.state.Body)
-        this.setState({ postArray: this.state.postArray, body: ''});
+    baseInfo = (response) => {
+        this.setState({ postArray: response.data })
     }
+    submit = () => {
+        let user = {
+            mainText: this.state.body,
+        };
+        this.state.body = ''
+        //debugger
+        axios.post('http://localhost:1488/', user).then((response) => {
+            let arc = Object.assign([], this.state.postArray);
+            arc.push(response.data)
+            this.setState({ postArray: arc });
+        }).catch((error) => console.log("RESPONSE", error));
+    }
+
+    delete = (e) => {
+        let deletingId = e.target.id;
+        axios.delete(`http://localhost:1488/228/${e.target.id}`).then(() => {
+            this.setState({ postArray: this.state.postArray.filter(obj => obj.id != deletingId) })
+        }).catch((error) => console.warn("RESPONE", error));
+    }
+
+    componentDidMount() {
+        axios.get('http://localhost:1488/').then((response) => {
+            this.setState({ postArray: response.data })
+        }).catch((error) => console.warn("RESPONE", error));
+    }
+
     render() {
-        console.warn(this.state);
+        const { postArray } = this.state;
         return (
             <div className="ideasTable">
-                <div className="tableName" onClick={click}>Список идей</div>
-
-                {this.state.postArray.map((post) => {
+                <div className="tableName" >Список идей</div>
+                {postArray.map((post) => {
                     return (<IdeasTableText
-                        key={post.key}
-                        text={post.value} />
+                        mainText={post.mainText}
+                        id={post.id}
+                        delete={this.delete} />
                     )
                 })
                 }
                 <textarea value={this.state.body} onChange={this.setIdea}></textarea>
-                <button onClick={this.addIdea}>Добавить идею</button>
+                <button onClick={this.submit} disabled={!this.state.body}>Добавить идею</button>
             </div>
         )
     }
 }
-
-function submit() {
-    let user = {
-        name: this.state.username,
-        password: this.state.password
-    };
-    axios.post(REGISTER, user).then((response) => {
-    }).catch((error) => alert(error));
-}
-
-function click() {
-    let ur = "";
-    if (ur) {
-
-    }
-}
-
-/*function IdeasTable() {
-    return (
-        <div className="ideasTable">
-            <div className="tableName" onClick={click}>Список идей</div>
-            <div className="tableContent"><IdeasTableText /></div>
-            <div>{Login.state}</div>
-        </div>
-    )
-}*/
 export default IdeasTable;
