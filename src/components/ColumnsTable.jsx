@@ -48,7 +48,7 @@ class IdeasTable extends React.Component {
     componentDidMount() {
         axios.get('http://localhost:1488/').then((response) => {
             this.setState({ columnArray: response.data })})
-            .catch((error) => console.warn("RESPONE", error));
+            .catch((error) => console.warn("RESPONSE", error));
     }
 
     render() {
