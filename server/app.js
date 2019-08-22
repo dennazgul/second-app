@@ -11,15 +11,14 @@ app.use(bodyParser.json(), cors());
 
 
 app.post('/', ((req, res) => {
-  let smth = req.body.mainText;
-  sequelize.Column.create({ name: 'hihihi'}).then(
-  sequelize.Card.create({ value: smth, columnId: 1}).then(cards => {
+  let smth = req.body.value;
+  sequelize.Card.create({ value: smth, columnId: 2}).then(cards => {
     res.send(cards)
   }).catch(error => {
     res.statusCode = 404;
     console.log(error)
     res.send(error);
-  }))
+  })
 
 }))
 
@@ -39,6 +38,14 @@ app.delete('/228/:id', ((req, res) => {
 
 sequelize.runSequelize();
 app.get('/', ((req, res) => {
+  sequelize.Column.findAll().then(cards => {
+    res.send(cards)
+  }
+  )
+}));
+
+sequelize.runSequelize();
+app.get('/sm', ((req, res) => {
   sequelize.Card.findAll().then(cards => {
     res.send(cards)
   }
