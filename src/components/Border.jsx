@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Link, BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import '../App.css';
 import Header from './Header';
-import IdeasTable from './IdeasTable';
+import ColumnsTable from './ColumnsTable';
 import InProgressTable from './InProgressTable';
 import Register from './Register';
 
@@ -40,22 +40,18 @@ httpGet("/dfgfhrtfjrthjrt jrtj rtyty tyjtyj")
     error => alert(`Rejected:`)
   );*/
 function Border() {
-    return (<div>
-        <header>
-        <Route component={Header} />
-        </header>
-        <div style={{ textAlign: "center"}}>
-            
-        <Route path="/register" component={Register} />
-        </div>
-            <div className="bodyContainer">
-                <div><IdeasTable />
-                </div>
-                <div><InProgressTable /></div>
-                <div></div>
-                <div></div>
-            </div>
+  return (<div>
+    <header>
+      <Route component={Header} />
+    </header>
+    <div style={{ textAlign: "center" }}>
+
+      <Route path="/register" component={Register} />
     </div>
-    )
+    <div >
+      <ColumnsTable />
+    </div>
+  </div>
+  )
 }
 export default Border;

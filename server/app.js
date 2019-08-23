@@ -11,8 +11,9 @@ app.use(bodyParser.json(), cors());
 
 
 app.post('/', ((req, res) => {
-  let smth = req.body.value;
-  sequelize.Card.create({ value: smth, columnId: 2}).then(cards => {
+  let value = req.body.value;
+  let colId = req.body.colId
+  sequelize.Card.create({ value: value, columnId: colId}).then(cards => {
     res.send(cards)
   }).catch(error => {
     res.statusCode = 404;
@@ -37,7 +38,7 @@ app.delete('/228/:id', ((req, res) => {
 }))
 
 sequelize.runSequelize();
-app.get('/', ((req, res) => {
+app.get('/col', ((req, res) => {
   sequelize.Column.findAll().then(cards => {
     res.send(cards)
   }
@@ -45,11 +46,15 @@ app.get('/', ((req, res) => {
 }));
 
 sequelize.runSequelize();
-app.get('/sm', ((req, res) => {
+app.get('/card/:colId', ((req, res) => {
+  const colId = req.params.colId;
   sequelize.Card.findAll().then(cards => {
-    res.send(cards)
+    res.send(cards.filter((card) => {return card.columnId == colId}))
   }
-  )
+  ).catch(error => {
+    res.statusCode = 404;
+    console.log(error)}
+    )
 }));
 
 app.listen(1488, () => {

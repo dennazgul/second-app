@@ -6,7 +6,6 @@ import Border from './components/Border';
 var obj = {
 	id: "awesome",
 	cool: function coolFn() {
-		console.log( this.id );
 	}
 };
 

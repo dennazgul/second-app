@@ -1,20 +1,19 @@
 import React from 'react';
 import { BrowserRouter } from "react-router-dom";
 import '../App.css';
-import IdeasTableText from './IdeasTableText';
+import IdeasTable from './IdeasTable';
 import { BrowserRouter as Route } from "react-router-dom";
 import axios from 'axios';
 import { REGISTER } from '../constants/urlConstsants';
 import { reject } from 'q';
 
-class IdeasTable extends React.Component {
+class ColumnsTable extends React.Component {
     constructor(props) {
         super(props);
         this.keyCreator = 1;
         this.state = {
             columnArray: [],
             body: '',
-            columnBody: ''
         };
 
     }
@@ -46,30 +45,29 @@ class IdeasTable extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:1488/').then((response) => {
-            this.setState({ columnArray: response.data })})
-            .catch((error) => console.warn("RESPONSE", error));
+        axios.get('http://localhost:1488/col').then((response) => {
+            this.setState({ columnArray: response.data })
+        })
     }
 
     render() {
-         const { columnArray } = this.state;
-         return (
-             <div className="ideasTable">
-                 <div className="tableName" >Список идей</div>
-                 {columnArray.map((post) => {
-                     return (<IdeasTableText
-                         mainText={post.mainText}
-                         id={post.id}
-                         delete={this.delete} />
-                     )
-                 })
-                 }
-                 <textarea value={this.state.body} onChange={this.setIdea}></textarea>
-                 <button onClick={this.submit} disabled={!this.state.body}>Добавить идею</button>
-                 <div><button onClick disabled>Добавить колонку</button></div>
-             </div>
-             
-         )
-     }
+        const { columnArray } = this.state;
+
+        return (
+                 <div className="bodyContainer">
+                {columnArray.map((post) => {
+                    return (<div className="ideasTable">{post.name}
+                        <IdeasTable
+                            colId={post.id}
+                        />
+                    </div>)
+                })
+                }
+                <textarea value={this.state.body} onChange={this.setIdea}></textarea>
+                <button onClick={this.submit} disabled={!this.state.body}>Добавить колонку</button>
+            </div>
+
+        )
+    }
 }
-export default IdeasTable;
+export default ColumnsTable;

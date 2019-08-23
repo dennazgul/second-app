@@ -9,22 +9,18 @@ class IdeasTableText extends React.Component {
         super(props);
     }
     render() {
-        if (this.props.colId == this.props.cardId) {
-            return (
-                <div className="ideasTable">
-                    <div className="tableContent">
-                        {this.props.mainText}<br></br>
-                        <div class="keyAndButton">
-                            <div></div>
-                            <button id={this.props.id} onClick={this.props.delete}>Delete</button>
-                        </div>
+        const {id, deleteButton, value} = this.props;
+        return (
+            <div className="ideasTable">
+                <div className="tableContent">
+                    {value}<br></br>
+                    <div class="keyAndButton">
+                        <div></div>
+                        <button id={id} onClick={deleteButton}>Delete</button>
                     </div>
                 </div>
-            )
-        }
-        else {
-            return null;
-        }
+            </div>
+        )
     }
 }
 export default IdeasTableText;
