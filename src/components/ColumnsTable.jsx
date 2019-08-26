@@ -26,11 +26,11 @@ class ColumnsTable extends React.Component {
     }
     submit = () => {
         let user = {
-            value: this.state.body,
+            name: this.state.body,
         };
         this.state.body = ''
         //debugger
-        axios.post('http://localhost:1488/', user).then((response) => {
+        axios.post('http://localhost:1488/col', user).then((response) => {
             let arc = Object.assign([], this.state.columnArray);
             arc.push(response.data)
             this.setState({ columnArray: arc });
@@ -56,7 +56,7 @@ class ColumnsTable extends React.Component {
         return (
                  <div className="bodyContainer">
                 {columnArray.map((post) => {
-                    return (<div className="ideasTable">{post.name}
+                    return (<div className="ideasTable" key={post.id}>{post.name}
                         <IdeasTable
                             colId={post.id}
                         />

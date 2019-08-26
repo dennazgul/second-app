@@ -32,7 +32,7 @@ class IdeasTable extends React.Component {
         };
         this.state.body = ''
         //debugger
-        axios.post('http://localhost:1488/', user).then((response) => {
+        axios.post('http://localhost:1488/card', user).then((response) => {
             let arc = Object.assign([], this.state.postArray);
             arc.push(response.data)
             this.setState({ postArray: arc });
@@ -55,10 +55,10 @@ class IdeasTable extends React.Component {
         const { postArray } = this.state;
         return (<div>
             {postArray.map((post) => {
-                return (<IdeasTableText
+                return (<div key={post.id}><IdeasTableText
                     value={post.value}
                     id={post.id}
-                    deleteButton={this.delete} />
+                    deleteButton={this.delete} /></div>
                 )
             })
             }

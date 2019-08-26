@@ -8,9 +8,19 @@ const jsonData = require('read-write-json');
 
 app.use(bodyParser.json(), cors());
 
+app.post('/col', ((req, res) => {
+  let name = req.body.name;
+  sequelize.Column.create({ name}).then(cols => {
+    res.send(cols)
+  }).catch(error => {
+    res.statusCode = 404;
+    console.log(error)
+    res.send(error);
+  })
 
+}))
 
-app.post('/', ((req, res) => {
+app.post('/card', ((req, res) => {
   let value = req.body.value;
   let colId = req.body.colId
   sequelize.Card.create({ value: value, columnId: colId}).then(cards => {
