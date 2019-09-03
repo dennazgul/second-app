@@ -1,19 +1,19 @@
 const Sequelize = require('sequelize');
 
-module.exports = function columnModel(sequelize) {
-const Column = sequelize.define('column', {
+module.exports = function cardModel(sequelize) {
+const Board = sequelize.define('board', {
     // attributes
     name: {
       type: Sequelize.STRING,
-      allowNull: false,
+      unique: true
     },
-    boardId: {
+    userId: {
       type: Sequelize.INTEGER,
       allowNull: false,
-    }
+    }, 
   }, {
     timestamps: false,
     // options
   });
-  return Column;
+  return Board;
 }

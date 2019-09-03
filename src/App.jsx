@@ -1,23 +1,18 @@
 import React from 'react';
 import './App.css';
 import { Link, BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Border from './components/Border';
+import Board from './components/Board';
+import Project from './components/Project';
 
-var obj = {
-	id: "awesome",
-	cool: function coolFn() {
-	}
-};
+function handle (ewfewfwe){
 
-var id = "not awesome";
+}
 
-obj.cool(); // awesome
-
-setTimeout( obj.cool, 100 ); // not awesome
 function App() {
+
   return (
     <Router>
-        <Route component={Border} />
+      <Project />
     </Router>
   );
 }

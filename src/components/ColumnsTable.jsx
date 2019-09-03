@@ -10,7 +10,6 @@ import { reject } from 'q';
 class ColumnsTable extends React.Component {
     constructor(props) {
         super(props);
-        this.keyCreator = 1;
         this.state = {
             columnArray: [],
             body: '',
@@ -27,6 +26,7 @@ class ColumnsTable extends React.Component {
     submit = () => {
         let user = {
             name: this.state.body,
+            boardId: this.props.colId
         };
         this.state.body = ''
         //debugger
@@ -45,16 +45,24 @@ class ColumnsTable extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:1488/col').then((response) => {
+        axios.get(`http://localhost:1488/col/${this.props.colId}`).then((response) => {
             this.setState({ columnArray: response.data })
         })
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.colId !== prevProps.colId) {
+            axios.get(`http://localhost:1488/col/${this.props.colId}`).then((response) => {
+                this.setState({ columnArray: response.data })
+                
+            })
+        }
+    }
+
     render() {
         const { columnArray } = this.state;
-
         return (
-                 <div className="bodyContainer">
+            <div className="bodyContainer">
                 {columnArray.map((post) => {
                     return (<div className="ideasTable" key={post.id}>{post.name}
                         <IdeasTable
@@ -63,8 +71,10 @@ class ColumnsTable extends React.Component {
                     </div>)
                 })
                 }
-                <textarea value={this.state.body} onChange={this.setIdea}></textarea>
-                <button onClick={this.submit} disabled={!this.state.body}>Добавить колонку</button>
+                <div>
+                    <textarea value={this.state.body} onChange={this.setIdea}></textarea>
+                    <button onClick={this.submit} disabled={!this.state.body}>Добавить колонку</button>
+                </div>
             </div>
 
         )
