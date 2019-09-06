@@ -1,9 +1,6 @@
 import React from 'react';
-import { BrowserRouter } from "react-router-dom";
-import { Link, BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Link} from "react-router-dom";
 import '../App.css';
-import InProgressTable from './InProgressTable';
-import Register from './Register';
 
 class MainHeader extends React.Component {
     constructor(props) {
@@ -24,19 +21,18 @@ class MainHeader extends React.Component {
         return (
             <div>
                 <div className="headerTop">
-                    <img src={require('../assets/image.png')} width="36px"></img>
                     <span>Мы рады приветствовать вас ЗДЕСЬ!</span>
                 </div>
                 <div>
                 <div className="headerTop">
-                    <img src={require('../assets/image.png')} width="36px"></img>
+                    <img src={require('../assets/image.png')} alt={'coolPic'} width="36px"></img>
                 </div>
                 <div className="headerBot">
                     <Link to="/registration">
-                        <span className="logRegButton" id="1" onClick={this.registration}>Регистрация</span>
+                        <span className="logRegButton" id="0" onClick={this.props.regOrLogin}>Регистрация</span>
                     </Link>
                     <Link to="/login">
-                        <span className="logRegButton" id="2" onClick={this.login}>Вход</span>
+                        <span className="logRegButton" id="1" onClick={this.props.regOrLogin}>Вход</span>
                     </Link>
                 </div>
             </div>

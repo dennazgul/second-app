@@ -1,6 +1,4 @@
 import React from 'react';
-import { BrowserRouter } from "react-router-dom";
-import { Link, BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import '../App.css';
 import axios from 'axios';
 import { withRouter } from "react-router";
@@ -16,16 +14,7 @@ class Login extends React.Component {
     handleTextareaChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
     }
-    /* registration submit = () => {
-        const { login, password } = this.state;
-        const form = {
-            login,
-            password
-        };
-        axios.post('http://localhost:1488/register', form)
-            .then((response) =>  this.props.handle(response.data.id))
-            .catch((error) => alert(error));
-    }*/
+
     submit = () => {
         if (!this.props.regAbler) {
             const { login, password } = this.state;
@@ -44,7 +33,7 @@ class Login extends React.Component {
                 password
             };
             axios.post('http://localhost:1488/register', form)
-                .then((response) => {this.props.sendBoards(response.data.id);
+                .then((response) => {this.props.sendUserId(response.data.id);
                 this.props.history.push('/boards')})
                 .catch((error) => alert(error));
         }
