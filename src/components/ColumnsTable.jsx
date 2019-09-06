@@ -6,6 +6,8 @@ import { BrowserRouter as Route } from "react-router-dom";
 import axios from 'axios';
 import { REGISTER } from '../constants/urlConstsants';
 import { reject } from 'q';
+import { withRouter } from "react-router";
+
 
 class ColumnsTable extends React.Component {
     constructor(props) {
@@ -45,7 +47,7 @@ class ColumnsTable extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:1488/col/${this.props.colId}`).then((response) => {
+        axios.get(`http://localhost:1488/col/${this.props.match.params.id}`).then((response) => {
             this.setState({ columnArray: response.data })
         })
     }
@@ -60,6 +62,7 @@ class ColumnsTable extends React.Component {
     }
 
     render() {
+        console.log(this.props);
         const { columnArray } = this.state;
         return (
             <div className="bodyContainer">
@@ -80,4 +83,4 @@ class ColumnsTable extends React.Component {
         )
     }
 }
-export default ColumnsTable;
+export default withRouter(ColumnsTable);

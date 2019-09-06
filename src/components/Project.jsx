@@ -3,26 +3,33 @@ import '../App.css';
 import { Link, BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Board from './Board';
 import Header from './Header';
+import { withRouter } from "react-router";
+import BoardAppearance from './BoardAppearance';
 
 class Project extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      boardArray: [],
-      userId: 0,
+      boardArray: []
     };
   }
-  handle = (userId) => {
-    this.setState({ userId })
+
+  componentDidMount() {
+    this.setState({boardArray: this.props.board})
   }
 
   render() {
-    return (
-      <Router>
-        <Route render={() => <Header handle={this.handle} />} />
-        <Route render={() => <Board userId={this.state.userId} />} />
-      </Router>
+
+    return (<div>
+      {this.state.boardArray.map((post) => {
+        return (<div>
+          <Route render={()=><BoardAppearance board={post}/>} />
+          </div>
+        )
+      })}
+     {/* <Route path="/board" render = {()=><Board userId={this.state.userId}/>} />*/}
+    </div>
     );
   }
 }
-export default Project;
+export default withRouter(Project);

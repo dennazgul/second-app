@@ -12,7 +12,7 @@ app.post('/register', ((req, res) => {
   let name = req.body.login;
   let password = req.body.password;
   console.log(name, password)
-  sequelize.User.create({ name, password, roleId: 1}).then(user => {
+  sequelize.User.create({ name, password, roleId: 1 }).then(user => {
     res.send(user)
   }).catch(error => {
     res.statusCode = 404;
@@ -26,7 +26,11 @@ app.post('/login', ((req, res) => {
   let name = req.body.login;
   let password = req.body.password;
   sequelize.User.findAll().then(users => {
-    res.send(users.find((user) => {return user.name == name && user.password == password}))
+    const user = users.find((user) => { return user.name == name && user.password == password })
+    sequelize.Board.findAll().then(boards => {
+      res.send(boards.filter((board) => { return board.userId == user.id }))
+      
+    })
   }
   ).catch(error => {
     res.statusCode = 404;
@@ -39,7 +43,7 @@ app.post('/login', ((req, res) => {
 app.post('/board', ((req, res) => {
   let name = req.body.name;
   let userId = req.body.userId;
-  sequelize.Board.create({ name, userId}).then(boards => {
+  sequelize.Board.create({ name, userId }).then(boards => {
     res.send(boards)
   }).catch(error => {
     res.statusCode = 404;
@@ -52,7 +56,7 @@ app.post('/board', ((req, res) => {
 app.post('/col', ((req, res) => {
   let name = req.body.name;
   let boardId = req.body.boardId;
-  sequelize.Column.create({ name, boardId}).then(cols => {
+  sequelize.Column.create({ name, boardId }).then(cols => {
     res.send(cols)
   }).catch(error => {
     res.statusCode = 404;
@@ -65,7 +69,7 @@ app.post('/col', ((req, res) => {
 app.post('/card', ((req, res) => {
   let value = req.body.value;
   let colId = req.body.colId
-  sequelize.Card.create({ value: value, columnId: colId}).then(cards => {
+  sequelize.Card.create({ value: value, columnId: colId }).then(cards => {
     res.send(cards)
   }).catch(error => {
     res.statusCode = 404;
@@ -94,7 +98,7 @@ app.get('/board/:userId', ((req, res) => {
   const userId = req.params.userId;
   console.log(userId)
   sequelize.Board.findAll().then(boards => {
-    res.send(boards.filter((board) => {return board.userId == userId}))
+    res.send(boards.filter((board) => { return board.userId == userId }))
   }
   )
 }));
@@ -102,7 +106,7 @@ app.get('/board/:userId', ((req, res) => {
 app.get('/col/:colId', ((req, res) => {
   const colId = req.params.colId;
   sequelize.Column.findAll().then(columns => {
-    res.send(columns.filter((column) => {return column.boardId == colId}))
+    res.send(columns.filter((column) => { return column.boardId == colId }))
   }
   )
 }));
@@ -111,12 +115,13 @@ sequelize.runSequelize();
 app.get('/card/:colId', ((req, res) => {
   const colId = req.params.colId;
   sequelize.Card.findAll().then(cards => {
-    res.send(cards.filter((card) => {return card.columnId == colId}))
+    res.send(cards.filter((card) => { return card.columnId == colId }))
   }
   ).catch(error => {
     res.statusCode = 404;
-    console.log(error)}
-    )
+    console.log(error)
+  }
+  )
 }));
 
 app.listen(1488, () => {

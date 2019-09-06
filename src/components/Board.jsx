@@ -8,6 +8,7 @@ import ColumnsTable from './ColumnsTable';
 import InProgressTable from './InProgressTable';
 import Register from './Register';
 
+
 class Board extends React.Component {
   constructor(props) {
     super(props);
@@ -43,7 +44,7 @@ class Board extends React.Component {
     if (this.props.userId !== prevProps.userId) 
     {console.log(this.props.userId)
     axios.get(`http://localhost:1488/board/${this.props.userId}`).then((response) => {
-      this.setState({ boardArray: response.data })
+      this.setState({ boardArray: response.data });
       
     })
   }

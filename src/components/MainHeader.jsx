@@ -5,7 +5,7 @@ import '../App.css';
 import InProgressTable from './InProgressTable';
 import Register from './Register';
 
-class Header extends React.Component {
+class MainHeader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,8 +13,9 @@ class Header extends React.Component {
         };
 
     }
-    registration = () => {
+    registration = (e) => {
         this.setState({ regAbler: true })
+        console.log(e.target.id)
     }
     login = () => {
         this.setState({ regAbler: false })
@@ -24,18 +25,24 @@ class Header extends React.Component {
             <div>
                 <div className="headerTop">
                     <img src={require('../assets/image.png')} width="36px"></img>
+                    <span>Мы рады приветствовать вас ЗДЕСЬ!</span>
+                </div>
+                <div>
+                <div className="headerTop">
+                    <img src={require('../assets/image.png')} width="36px"></img>
                 </div>
                 <div className="headerBot">
-                    <Link to="/login">
-                        <span className="logRegButton" onClick={this.registration}>Регистрация</span>
+                    <Link to="/registration">
+                        <span className="logRegButton" id="1" onClick={this.registration}>Регистрация</span>
                     </Link>
                     <Link to="/login">
-                        <span className="logRegButton" onClick={this.login}>Вход</span>
+                        <span className="logRegButton" id="2" onClick={this.login}>Вход</span>
                     </Link>
-                    <Route path="/login" render={() => <Register sendBoards={this.props.sendBoards} regAbler={this.state.regAbler} />} />
                 </div>
             </div>
+            </div>
+
         )
     }
 }
-export default Header;
+export default MainHeader;
