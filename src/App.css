@@ -42,3 +42,11 @@
   margin-left: 8px;
   padding: 0 14px;
 }
+.boardAppearance {
+  border: 1px solid green;
+  text-align: center;
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 1.5em;
+  background-color: #A8BCD1;
+}

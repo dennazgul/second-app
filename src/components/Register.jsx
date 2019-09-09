@@ -23,8 +23,10 @@ class Login extends React.Component {
                 password
             };
             axios.post('http://localhost:1488/login', form)
-                .then((response) => {this.props.sendBoards(response.data)
-                this.props.history.push('/boards')} )
+                .then((response) => {
+                    this.props.sendData(response.data)
+                    this.props.history.push('/boards')
+                })
                 .catch((error) => alert(error));
         } else {
             const { login, password } = this.state;
@@ -33,8 +35,10 @@ class Login extends React.Component {
                 password
             };
             axios.post('http://localhost:1488/register', form)
-                .then((response) => {this.props.sendUserId(response.data.id);
-                this.props.history.push('/boards')})
+                .then((response) => {
+                    this.props.sendUser(response.data);
+                    this.props.history.push('/boards')
+                })
                 .catch((error) => alert(error));
         }
     }
@@ -43,12 +47,11 @@ class Login extends React.Component {
         return (
             <div className="registrationForm">
                 <div>
-                    <span hidden={!this.props.regAbler}>Регистрация</span>{/*косметические*/}
-                    <span hidden={this.props.regAbler}>Вход</span>{/*косметические*/}
+                    {this.props.regAbler ? <span>Регистрация</span> : <span>Вход</span>}
                     <input value={this.state.fieldInfo.login} name="login" placeholder="введите логин" onChange={this.handleTextareaChange} cols="40" rows="3"></input>
                     <input value={this.state.fieldInfo.password} type="password" name="password" placeholder="введите пароль" onChange={this.handleTextareaChange} cols="40" rows="3"></input>
-                    <input hidden={!this.props.regAbler} value={this.state.fieldInfo.passwordrep} name="passwordrep"
-                    placeholder="введите пароль" onChange={this.handleTextareaChange} cols="40" rows="3"></input>{/*прячется если выбран "вход"*/}
+                    {this.props.regAbler ? <input value={this.state.fieldInfo.passwordrep} name="passwordrep"
+                        placeholder="введите пароль" onChange={this.handleTextareaChange} cols="40" rows="3"></input> : null}
                     <button onClick={this.submit}>Отправить</button>
                 </div>
             </div>

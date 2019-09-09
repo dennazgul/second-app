@@ -41,7 +41,7 @@ class Boards extends React.Component {
     return (
       <div>
         {this.state.boardArray.map((post) => {
-          return (<div key={post.id}>
+          return (<div className="boardAppearance" key={post.id}>
             <Route render={() => <BoardAppearance board={post} />} />
           </div>
           )

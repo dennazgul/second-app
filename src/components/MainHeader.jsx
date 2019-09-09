@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import '../App.css';
+import { withRouter } from "react-router";
 
 class MainHeader extends React.Component {
     constructor(props) {
@@ -10,35 +11,38 @@ class MainHeader extends React.Component {
         };
 
     }
-    registration = (e) => {
-        this.setState({ regAbler: true })
-        console.log(e.target.id)
-    }
-    login = () => {
-        this.setState({ regAbler: false })
+
+    logout = () => {
+        this.props.logout();
+        this.props.history.push('/')
     }
     render() {
         return (
             <div>
                 <div className="headerTop">
-                    <span>Мы рады приветствовать вас ЗДЕСЬ!</span>
+                    <span>Мы рады приветствовать вас ЗДЕСЬ{this.props.userName ? <span>{', ' + this.props.userName}</span> : null}!</span>
                 </div>
                 <div>
-                <div className="headerTop">
-                    <img src={require('../assets/image.png')} alt={'coolPic'} width="36px"></img>
+                    <div className="headerTop">
+                        <img src={require('../assets/image.png')} alt={'coolPic'} width="36px"></img>
+                    </div>
+                    {this.props.userId ?
+                        <div className="headerBot"><span className="logRegButton" onClick={this.logout}>Выйти</span></div>
+                        :
+                        <div className="headerBot">
+                            <Link to="/registration">
+                                <span className="logRegButton" id="0" onClick={this.props.regOrLogin}>Регистрация</span>
+                            </Link>
+                            <Link to="/login">
+                                <span className="logRegButton" id="1" onClick={this.props.regOrLogin}>Вход</span>
+                            </Link>
+                        </div>
+                    }
+
                 </div>
-                <div className="headerBot">
-                    <Link to="/registration">
-                        <span className="logRegButton" id="0" onClick={this.props.regOrLogin}>Регистрация</span>
-                    </Link>
-                    <Link to="/login">
-                        <span className="logRegButton" id="1" onClick={this.props.regOrLogin}>Вход</span>
-                    </Link>
-                </div>
-            </div>
             </div>
 
         )
     }
 }
-export default MainHeader;
+export default withRouter(MainHeader);

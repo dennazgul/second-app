@@ -27,7 +27,10 @@ app.post('/login', ((req, res) => {
     sequelize.User.findAll().then(users => {
       const user = users.find((user) => { return user.name == name && user.password == password })
       sequelize.Board.findAll().then(boards => {
-        res.send(boards.filter((board) => { return board.userId == user.id }))
+        let boardList = boards.filter((board) => { return board.userId == user.id });
+        let userId = user.id;
+        let userName = user.name;
+        res.send({boardList, userId, userName})
 
       })
     }

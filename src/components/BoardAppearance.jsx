@@ -19,7 +19,7 @@ class BoardAppearance extends React.Component {
 
   render() {
     return (<div onClick={this.openBoard}>
-     {this.state.boardData.name}
+     Имя борды: {this.state.boardData.name}
     </div>
     )
   }
