@@ -6,7 +6,6 @@ import axios from 'axios';
 class IdeasTable extends React.Component {
     constructor(props) {
         super(props);
-        this.keyCreator = 1;
         this.state = {
             postArray: [],
             body: '',
@@ -32,31 +31,37 @@ class IdeasTable extends React.Component {
         }).catch((error) => console.log("RESPONSE", error));
     }
 
-    delete = (e) => {
-        let deletingId = e.target.id;
-        axios.delete(`http://localhost:1488/228/${e.target.id}`).then(() => {
+    deleteTable = (e) => {
+        let deletingId = Number(e.target.id);
+        axios.delete(`http://localhost:1488/card/${deletingId}`).then(() => {
             this.setState({ postArray: this.state.postArray.filter(obj => obj.id !== deletingId) })
         }).catch((error) => console.warn("RESPONE", error));
     }
 
     componentDidMount() {
         axios.get(`http://localhost:1488/card/${this.props.colId}`).then((response) => {
-            this.setState({ postArray: response.data })}).catch((error) => console.warn("RESPONE", error))
-        }
+            this.setState({ postArray: response.data })
+        }).catch((error) => console.warn("RESPONE", error))
+    }
 
     render() {
         const { postArray } = this.state;
-        return (<div>
+        return (<div className="ideasTable">
             {postArray.map((post) => {
                 return (<div key={post.id}><IdeasTableText
                     value={post.value}
                     id={post.id}
-                    deleteButton={this.delete} /></div>
+                    deleteButton={this.deleteTable} /></div>
                 )
             })
             }
-            <textarea value={this.state.body} onChange={this.setIdea}></textarea>
-            <button onClick={this.submit} disabled={!this.state.body}>Добавить идею</button>
+            <div className="columnBottom">
+                <div ><i id={this.props.colId} onClick={this.props.deleteColumn} className="fas fa-lg fa-trash-alt"></i></div>
+                <div >
+                    <textarea placeholder="Добавить идею" value={this.state.body} onChange={this.setIdea}></textarea>
+                    <button onClick={this.submit} disabled={!this.state.body}><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
         </div>
         )
     }

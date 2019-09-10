@@ -41,15 +41,17 @@ class Boards extends React.Component {
     return (
       <div>
         {this.state.boardArray.map((post) => {
-          return (<div className="boardAppearance" key={post.id}>
+          return (<div className="boardTable" key={post.id}>
             <Route render={() => <BoardAppearance board={post} />} />
           </div>
           )
         })}
-        <div>
-          <textarea value={this.state.body} onChange={this.setIdea}></textarea>
+        <div className="underBoardTable">
+          <textarea  className="addBoard" value={this.state.body} onChange={this.setIdea}></textarea>
+          </div>
+          <div>
           <button onClick={this.submit} disabled={!this.state.body}>Добавить борду</button>
-        </div>
+          </div>
       </div>
     );
   }

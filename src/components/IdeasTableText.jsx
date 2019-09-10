@@ -5,12 +5,12 @@ class IdeasTableText extends React.Component {
     render() {
         const {id, deleteButton, value} = this.props;
         return (
-            <div className="ideasTable">
+            <div>
                 <div className="tableContent">
-                    {value}<br></br>
+                    <span>{value}</span><br></br>
                     <div className="keyAndButton">
                         <div></div>
-                        <button id={id} onClick={deleteButton}>Delete</button>
+                        <i id={id} onClick={deleteButton} className="fas fa-trash-alt"></i>
                     </div>
                 </div>
             </div>

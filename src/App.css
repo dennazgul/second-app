@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Mountains+of+Christmas&display=swap');
-
+html, body {
+  height: 100%;
+  color: #242323;
+}
+#root {
+  height: 100%;
+  background: linear-gradient(#dfe4ed, #9198e5);
+}
 .headerTop {
   background-color: #a19422;
   text-align: center;
@@ -8,45 +15,119 @@
   background-color: #cebf35;
   text-align: center;
   font-family: 'Mountains of Christmas', cursive;
-  color: #2c2911;
 }
-.bodyContainer {
+.columnContainer {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-column-gap: 16px;
-  background-color: rgb(248, 242, 190);
-  padding: 8px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-column-gap: 6px;
+  padding: 12px;
+}
+.columnName {
+  font-weight: 600;
+  font-size: 1.25em;
+}
 
+.addColumn {
+  padding-top: 1.87em;
+  text-align: center;
+}
+.addColumn > textarea {
+  min-width: 18em;
 }
 .tableName {
   font-weight: 600;
   text-align: center;
 }
-.ideasTable {
-  border-radius: 8px;
-  padding: 8px;
-  background-color: #bdb9ae;
-}
+
 .tableContent {
   border-radius: 8px;
   padding: 3px;
   background-color: #969695;
-  margin-bottom: 8px; 
+  margin-bottom: 8px;
+  text-align: left;
+  max-width: 360px;
+  word-wrap: break-word; 
 }
 .keyAndButton {
-  display: grid;
-  grid-template-columns: 5fr 1fr;
+text-align: right;
 }
 .logRegButton {
   border: 1px solid black;
   margin-left: 8px;
   padding: 0 14px;
+  border-radius: 8px;
+  
 }
-.boardAppearance {
+.returnToBoards {
+  display: inline-block;
+  margin-left: 0.5em;
+  margin-top: 0.5em;
+  border:1px solid #696969;
+  border-radius: 6px;
+  padding: 3px 8px 3px 3px;
+}
+.boardTable {
+  text-align: center;
+}
+.underBoardTable {
+  margin-top: 20px;
+  text-align: center;
+}
+.underBoardTable + div {
+  text-align: center;
+}
+.boardContainer {
+  display: inline-block;
   border: 1px solid green;
   text-align: center;
+  vertical-align: center;
   margin-top: 8px;
   font-weight: 600;
   font-size: 1.5em;
   background-color: #A8BCD1;
+}
+.boardAppearance {
+  display: flex;
+  height: 120px;
+  min-width: 360px;
+  justify-content: center;
+  align-items: center; 
+}
+.addBoard {
+  min-height: 120px;
+  min-width: 360px;
+}
+.ideasTable {
+  border-radius: 8px;
+  padding: 8px;
+  background-color: #bdb9ae;
+  border: 1px solid #696969;
+}
+
+.alignCenter {
+  text-align: center;
+}
+.columnBottom {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+.columnBottom :first-child {
+  display: flex;
+  align-items: flex-end;
+}
+.columnBottom :last-child {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  text-align: right;
+}
+a:visited {
+  text-decoration: none;
+  color: #242323;
+}
+i {
+  color: #575555;
+}
+button:disabled > i {
+  color: #c9bdbd;
 }

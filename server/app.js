@@ -81,8 +81,19 @@ app.post('/card', ((req, res) => {
 
   }))
 
+  app.delete('/column/:id', ((req, res) => {
+    const id = req.params.id;
+    sequelize.Column.destroy({
+      where: {
+        id
+      }
+    }).then(() => {
+      res.send()
+    }
+    )
+  }))
 
-app.delete('/228/:id', ((req, res) => {
+app.delete('/card/:id', ((req, res) => {
     const id = req.params.id;
     console.log(id)
     sequelize.Card.destroy({

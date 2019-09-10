@@ -1,6 +1,7 @@
 import React from 'react';
 import '../App.css';
 import IdeasTable from './IdeasTable';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import { withRouter } from "react-router";
 
@@ -30,40 +31,49 @@ class ColumnsTable extends React.Component {
             this.setState({ columnArray: arc, body: '' });
         }).catch((error) => console.log("RESPONSE", error));
     }
-
+    deleteColumn = (e) => {
+        let deletingId = Number(e.target.id);
+        axios.delete(`http://localhost:1488/column/${deletingId}`).then(() => {
+            this.setState({ columnArray: this.state.columnArray.filter(obj => obj.id !== deletingId) })
+        }).catch((error) => console.warn("RESPONE", error));
+    }
     componentDidMount() {
         axios.get(`http://localhost:1488/col/${this.props.match.params.id}`).then((response) => {
             this.setState({ columnArray: response.data })
         })
     }
 
-    componentDidUpdate(prevProps) {
+    /*componentDidUpdate(prevProps) {
         if (this.props.colId !== prevProps.colId) {
             axios.get(`http://localhost:1488/col/${this.props.colId}`).then((response) => {
                 this.setState({ columnArray: response.data })
             })
         }
-    }
+    }*/
 
     render() {
-        console.log(this.props);
         const { columnArray } = this.state;
-        return (
-            <div className="bodyContainer">
+        return (<div>
+            <Link to="/boards">
+            <div className="returnToBoards"><i class="fas fa-list"></i>   </div>
+            </Link>
+            <div className="columnContainer">
                 {columnArray.map((post) => {
-                    return (<div className="ideasTable" key={post.id}>{post.name}
+                    return (<div className="alignCenter" key={post.id}><div className="columnName">{post.name}</div>
                         <IdeasTable
                             colId={post.id}
+                            deleteColumn={this.deleteColumn}
                         />
+                        
                     </div>)
                 })
                 }
-                <div>
+                <div className="addColumn">
                     <textarea value={this.state.body} onChange={this.setIdea}></textarea>
-                    <button onClick={this.submit} disabled={!this.state.body}>Добавить колонку</button>
+                    <div><button onClick={this.submit} disabled={!this.state.body}>Добавить колонку</button></div>
                 </div>
             </div>
-
+            </div>
         )
     }
 }

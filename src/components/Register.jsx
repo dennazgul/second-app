@@ -45,7 +45,7 @@ class Login extends React.Component {
 
     render() {
         return (
-            <div className="registrationForm">
+            <div className="headerBot">
                 <div>
                     {this.props.regAbler ? <span>Регистрация</span> : <span>Вход</span>}
                     <input value={this.state.fieldInfo.login} name="login" placeholder="введите логин" onChange={this.handleTextareaChange} cols="40" rows="3"></input>

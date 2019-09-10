@@ -41,7 +41,6 @@ class MainHeader extends React.Component {
 
                 </div>
             </div>
-
         )
     }
 }
