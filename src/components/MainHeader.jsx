@@ -27,7 +27,7 @@ class MainHeader extends React.Component {
                         <img src={require('../assets/image.png')} alt={'coolPic'} width="36px"></img>
                     </div>
                     {this.props.userId ?
-                        <div className="headerBot"><span className="logRegButton" onClick={this.logout}>Выйти</span></div>
+                        <div className="headerBot"><span className="logRegButton" onClick={this.logout}><i class="fas fa-sign-out-alt redirect-mark"></i></span></div>
                         :
                         <div className="headerBot">
                             <Link to="/registration">

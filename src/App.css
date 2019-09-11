@@ -5,6 +5,7 @@ html, body {
 }
 #root {
   height: 100%;
+  overflow: auto;
   background: linear-gradient(#dfe4ed, #9198e5);
 }
 .headerTop {
@@ -128,6 +129,16 @@ a:visited {
 i {
   color: #575555;
 }
+.delete-mark:hover {
+  color: #991717;
+}
+.redirect-mark:hover {
+  color: #3866ab;
+}
 button:disabled > i {
   color: #c9bdbd;
+}
+textarea {
+  border: 1px solid #696969;
+  border-radius: 4px;
 }

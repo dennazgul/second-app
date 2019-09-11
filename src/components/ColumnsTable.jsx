@@ -55,7 +55,7 @@ class ColumnsTable extends React.Component {
         const { columnArray } = this.state;
         return (<div>
             <Link to="/boards">
-            <div className="returnToBoards"><i class="fas fa-list"></i>   </div>
+            <div className="returnToBoards"><i class="fas fa-list redirect-mark"></i></div>
             </Link>
             <div className="columnContainer">
                 {columnArray.map((post) => {

@@ -11,13 +11,13 @@ class App extends React.Component {
     super(props);
     this.state = {
       boardArray: [],
-      userId:0,
+      userId: 0,
       userName: '',
       regAbler: false
     }
   }
   sendData = (userData) => {
-    this.setState({ boardArray: userData.boardList, userId: userData.userId, userName: userData.userName})
+    this.setState({ boardArray: userData.boardList, userId: userData.userId, userName: userData.userName })
   }
   sendUser = (user) => {
     this.setState({ boardArray: [], userId: user.id, userName: user.name })
@@ -25,24 +25,29 @@ class App extends React.Component {
 
   regOrLogin = (e) => {
     if (e.target.id == 0) {
-    this.setState({ regAbler: true })
-  } else {
-    this.setState({ regAbler: false })
+      this.setState({ regAbler: true })
+    } else {
+      this.setState({ regAbler: false })
+    }
   }
-}
-logout = () => {
-  this.setState({userId: 0, userName: ''})
-}
+  logout = () => {
+    this.setState({ userId: 0, userName: '' })
+  }
 
   render() {
     return (
       <Router>
-        <MainHeader regOrLogin={this.regOrLogin} logout={this.logout} userId={this.state.userId} userName={this.state.userName}/>
+        <MainHeader
+          regOrLogin={this.regOrLogin}
+          logout={this.logout}
+          userId={this.state.userId}
+          userName={this.state.userName}
+        />
         <Route path="/login" render={() => <Register sendData={this.sendData} regAbler={this.state.regAbler} />} />
         <Route path="/registration" render={() => <Register sendUser={this.sendUser} regAbler={this.state.regAbler} />} />
-        <Route path="/boards" render={() => <Boards board={this.state.boardArray} userId={this.state.userId}/>} />
+        <Route path="/boards" render={() => <Boards board={this.state.boardArray} userId={this.state.userId} />} />
         <Route path="/board/:id" render={() => <ColumnsTable />} />
-        <Redirect to="/"/>
+        <Redirect to="/" />
       </Router>
     );
   }

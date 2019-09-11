@@ -25,11 +25,14 @@ class Boards extends React.Component {
       userId: this.state.userId
     };
     //debugger
-    axios.post('http://localhost:1488/board', board).then((response) => {
-      let arc = Object.assign([], this.state.boardArray);
-      arc.push(response.data)
-      this.setState({ boardArray: arc });
-    }).catch((error) => console.log("RESPONSE", error));
+    axios
+      .post('http://localhost:1488/board', board)
+      .then((response) => {
+        let arc = Object.assign([], this.state.boardArray);
+        arc.push(response.data)
+        this.setState({ boardArray: arc });
+      })
+      .catch((error) => console.log("RESPONSE", error));
   }
 
   componentDidMount() {
@@ -47,11 +50,11 @@ class Boards extends React.Component {
           )
         })}
         <div className="underBoardTable">
-          <textarea  className="addBoard" value={this.state.body} onChange={this.setIdea}></textarea>
-          </div>
-          <div>
+          <textarea className="addBoard" value={this.state.body} onChange={this.setIdea}></textarea>
+        </div>
+        <div>
           <button onClick={this.submit} disabled={!this.state.body}>Добавить борду</button>
-          </div>
+        </div>
       </div>
     );
   }
