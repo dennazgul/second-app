@@ -17,11 +17,60 @@ html, body {
   text-align: center;
   font-family: 'Mountains of Christmas', cursive;
 }
-.columnContainer {
+.userList {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  padding: 4px 16px;
+  margin: 4px 4px;
+  border: 1px solid #696969;
+  border-radius: 8px;
+}
+.userList :first-child {
+  display: flex;
+  align-items: center;
+}
+.userList :last-child > span {
+padding-right: 8px;
+}
+.userList :last-child {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.columnsAndMenuContainer {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+}
+.columnsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-column-gap: 6px;
   padding: 12px;
+}
+.columnsContainer + div {
+  border: 1px solid #696969;
+  border-radius: 8px;
+  background-color: #bdb9ae;
+}
+.columnsContainer + div > input {
+  margin-left: 4px;
+  padding-left: 4px;
+  border: 1px solid #696969;
+  border-radius: 4px;
+}
+.columnBottom {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+.columnBottom :first-child {
+  display: flex;
+  align-items: flex-end;
+}
+.columnBottom :last-child {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  text-align: right;
 }
 .columnName {
   font-weight: 600;
@@ -87,6 +136,13 @@ text-align: right;
   font-size: 1.5em;
   background-color: #A8BCD1;
 }
+.alienBoard {
+  position: absolute;
+  font-weight: 400;
+  font-size: 0.93em;
+  padding-left: 4px;
+  color: #756767;
+}
 .boardAppearance {
   display: flex;
   height: 120px;
@@ -108,20 +164,7 @@ text-align: right;
 .alignCenter {
   text-align: center;
 }
-.columnBottom {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-}
-.columnBottom :first-child {
-  display: flex;
-  align-items: flex-end;
-}
-.columnBottom :last-child {
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  text-align: right;
-}
+
 a:visited {
   text-decoration: none;
   color: #242323;

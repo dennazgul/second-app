@@ -30,7 +30,9 @@ class Boards extends React.Component {
       .then((response) => {
         let arc = Object.assign([], this.state.boardArray);
         arc.push(response.data)
-        this.setState({ boardArray: arc });
+        this.setState({ boardArray: arc }, () => {
+          this.props.addBoard(this.state.boardArray)
+        });
       })
       .catch((error) => console.log("RESPONSE", error));
   }
@@ -45,7 +47,7 @@ class Boards extends React.Component {
       <div>
         {this.state.boardArray.map((post) => {
           return (<div className="boardTable" key={post.id}>
-            <Route render={() => <BoardAppearance board={post} />} />
+            <Route render={() => <BoardAppearance board={post} userId={this.state.userId}/>} />
           </div>
           )
         })}

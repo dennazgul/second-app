@@ -14,12 +14,13 @@ class BoardAppearance extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({boardData: this.props.board}) 
+    this.setState({ boardData: this.props.board }, () => { console.log(this.state.boardData) })
   }
 
   render() {
     return (<div className="boardContainer" onClick={this.openBoard}>
-     <div className="boardAppearance">Имя борды: {this.state.boardData.name}</div>
+      {this.props.userId === this.state.boardData.userId ? null : <div className="alienBoard">чужая борда</div>}
+      <div className="boardAppearance">Имя борды: {this.state.boardData.name}</div>
     </div>
     )
   }

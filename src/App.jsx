@@ -34,6 +34,10 @@ class App extends React.Component {
     this.setState({ userId: 0, userName: '' })
   }
 
+  addBoard = (boardArray) => {
+    this.setState({ boardArray})
+  }
+
   render() {
     return (
       <Router>
@@ -45,8 +49,8 @@ class App extends React.Component {
         />
         <Route path="/login" render={() => <Register sendData={this.sendData} regAbler={this.state.regAbler} />} />
         <Route path="/registration" render={() => <Register sendUser={this.sendUser} regAbler={this.state.regAbler} />} />
-        <Route path="/boards" render={() => <Boards board={this.state.boardArray} userId={this.state.userId} />} />
-        <Route path="/board/:id" render={() => <ColumnsTable />} />
+        <Route path="/boards" render={() => <Boards addBoard={this.addBoard} board={this.state.boardArray} userId={this.state.userId} />} />
+        <Route path="/board/:id" render={() => <ColumnsTable userId={this.state.userId}/>} />
         <Redirect to="/" />
       </Router>
     );

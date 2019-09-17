@@ -12,10 +12,6 @@ const User = sequelize.define('user', {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    roleId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
   }, {
     timestamps: false,
     // options

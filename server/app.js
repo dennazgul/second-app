@@ -11,120 +11,106 @@ app.use(bodyParser.json(), cors());
 app.post('/register', ((req, res) => {
   let name = req.body.login;
   let password = req.body.password;
-  sequelize.User.create({ name, password, roleId: 1 }).then(user => {
+  sequelize.User.create({ name, password }).then(user => {
     res.send(user)
-    }).catch(error => {
-      res.statusCode = 404;
-      console.log(error)
-      res.send(error);
-    })
-
-  }))
+  }).catch(error => {
+    res.send(error);
+  })
+}))
 
 app.post('/login', ((req, res) => {
-    let name = req.body.login;
-    let password = req.body.password;
-    sequelize.User.findAll().then(users => {
-      const user = users.find((user) => { return user.name == name && user.password == password })
+  let name = req.body.login;
+  let password = req.body.password;
+  sequelize.User.findAll().then(users => {
+    const user = users.find((user) => { return user.name == name && user.password == password })
+    sequelize.BoardOwner.findAll().then(fullBoards => {
+      let boardList = fullBoards.filter((fullBoard) => { return fullBoard.userId == user.id })
       sequelize.Board.findAll().then(boards => {
-        let boardList = boards.filter((board) => { return board.userId == user.id });
         let userId = user.id;
         let userName = user.name;
-        res.send({boardList, userId, userName})
-
+        res.send({
+          boardList: boards.filter((postBoard) => {
+            return (boardList.filter((postBoardOwner) => {
+              return (postBoardOwner.boardId == postBoard.id)
+            }).length ? true : false)
+          }
+          ), userId, userName
+        })
       })
     }
-    ).catch(error => {
-      res.statusCode = 404;
-      console.log(error)
-      res.send(error);
-    })
-
-  }))
-
-app.post('/board', ((req, res) => {
-    let name = req.body.name;
-    let userId = req.body.userId;
-    sequelize.Board.create({ name, userId }).then(board => {
-      res.send(board)
-    }).catch(error => {
-      res.statusCode = 404;
-      console.log(error)
-      res.send(error);
-    })
-
-  }))
-
-app.post('/col', ((req, res) => {
-    let name = req.body.name;
-    let boardId = req.body.boardId;
-    sequelize.Column.create({ name, boardId }).then(cols => {
-      res.send(cols)
-    }).catch(error => {
-      res.statusCode = 404;
-      console.log(error)
-      res.send(error);
-    })
-
-  }))
-
-app.post('/card', ((req, res) => {
-    let value = req.body.value;
-    let colId = req.body.colId
-    sequelize.Card.create({ value: value, columnId: colId }).then(cards => {
-      res.send(cards)
-    }).catch(error => {
-      res.statusCode = 404;
-      console.log(error)
-      res.send(error);
-    })
-
-  }))
-
-  app.delete('/column/:id', ((req, res) => {
-    const id = req.params.id;
-    sequelize.Column.destroy({
-      where: {
-        id
-      }
-    }).then(() => {
-      res.send()
-    }
     )
-  }))
+  }).catch(error => {
+    res.statusCode = 404;
+    res.send(error);
+  })
+}))
 
-app.delete('/card/:id', ((req, res) => {
-    const id = req.params.id;
-    console.log(id)
-    sequelize.Card.destroy({
-      where: {
-        id
-      }
-    }).then(() => {
-      res.send()
-    }
+app.get('/user/:namePart/:userId', ((req, res) => {
+  const namePart = req.params.namePart;
+  const userId = req.params.userId;
+  sequelize.User.findAll().then(users => {
+    res.send(
+      users.filter((user) => { return user.name.indexOf(namePart) ? false : true }).filter((user) => { return user.id != userId })
     )
-  }))
-
-
-app.get('/board/:userId', ((req, res) => {
-    const userId = req.params.userId;
-    console.log(userId)
-    sequelize.Board.findAll().then(boards => {
-      res.send(boards.filter((board) => { return board.userId == userId }))
-    }
-    )
-  }));
-
-app.get('/col/:colId', ((req, res) => {
-  const colId = req.params.colId;
-  sequelize.Column.findAll().then(columns => {
-    res.send(columns.filter((column) => { return column.boardId == colId }))
   }
   )
 }));
 
-sequelize.runSequelize();
+app.post('/board', ((req, res) => {
+  let name = req.body.name;
+  let userId = req.body.userId;
+  sequelize.Board.create({ name, userId }).then(board => {
+    sequelize.BoardOwner.create({ userId, boardId: board.id }).then(() => {
+      res.send(board)
+    })
+  }).catch(error => {
+    res.statusCode = 404;
+    res.send(error);
+  })
+}))
+
+app.post('/shareBoard', ((req, res, statusCode) => {
+  let userId = req.body.sharingUserId;
+  let boardId = req.body.boardId;
+  sequelize.BoardOwner.create({ userId, boardId }).then(response => {
+    res.send(response)
+  }).catch(error => {
+    res.statusCode = 404;
+    res.send(error);
+  })
+}))
+
+app.get('/column/:boardId', ((req, res) => {
+  const boardId = req.params.boardId;
+  sequelize.Column.findAll().then(columns => {
+    res.send(columns.filter((column) => { return column.boardId == boardId }))
+  }
+  )
+}));
+
+app.post('/column', ((req, res) => {
+  let name = req.body.name;
+  let boardId = req.body.boardId;
+  sequelize.Column.create({ name, boardId }).then(cols => {
+    res.send(cols)
+  }).catch(error => {
+    res.statusCode = 404;
+    res.send(error);
+  })
+}))
+
+app.delete('/column/:id', ((req, res) => {
+  const id = req.params.id;
+  sequelize.Column.destroy({
+    where: {
+      id
+    }
+  }).then(() => {
+    res.send()
+  }
+  )
+}))
+
 app.get('/card/:colId', ((req, res) => {
   const colId = req.params.colId;
   sequelize.Card.findAll().then(cards => {
@@ -132,10 +118,35 @@ app.get('/card/:colId', ((req, res) => {
   }
   ).catch(error => {
     res.statusCode = 404;
-    console.log(error)
   }
   )
 }));
+
+app.post('/card', ((req, res) => {
+  let value = req.body.value;
+  let colId = req.body.colId
+  sequelize.Card.create({ value: value, columnId: colId }).then(cards => {
+    res.send(cards)
+  }).catch(error => {
+    res.statusCode = 404;
+    res.send(error);
+  })
+
+}))
+
+app.delete('/card/:id', ((req, res) => {
+  const id = req.params.id;
+  sequelize.Card.destroy({
+    where: {
+      id
+    }
+  }).then(() => {
+    res.send()
+  }
+  )
+}))
+
+sequelize.runSequelize();
 
 app.listen(1488, () => {
   console.log('Example app listening on port 1488!');
