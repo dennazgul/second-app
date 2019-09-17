@@ -37,17 +37,35 @@ class Boards extends React.Component {
       .catch((error) => console.log("RESPONSE", error));
   }
 
+  deleteBoard = (e) => {
+    let boardId = e.target.id;
+    axios.delete(`http://localhost:1488/board/${boardId}/`).then(() => {
+      this.setState({ boardArray: this.state.boardArray.filter(obj => obj.id != boardId) })
+    }).catch((error) => console.warn("RESPONE", error));
+  }
+
+  refuseBoardAccess = (e) => {
+    let sharedUserId = this.state.userId;
+    let sharedBoardId = e.target.id;
+    axios.delete(`http://localhost:1488/board/${sharedUserId}/${sharedBoardId}`).then(() => {
+      this.setState({ boardArray: this.state.boardArray.filter(obj => obj.id != sharedBoardId) })
+    }).catch((error) => console.warn("RESPONE", error));
+  }
+
   componentDidMount() {
     this.setState({ boardArray: this.props.board, userId: this.props.userId })
   }
 
   render() {
-
     return (
       <div>
         {this.state.boardArray.map((post) => {
           return (<div className="boardTable" key={post.id}>
-            <Route render={() => <BoardAppearance board={post} userId={this.state.userId}/>} />
+            <Route render={() => <BoardAppearance
+              board={post}
+              userId={this.state.userId}
+              deleteBoard={this.deleteBoard}
+              refuseBoardAccess={this.refuseBoardAccess} />} />
           </div>
           )
         })}

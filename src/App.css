@@ -25,6 +25,13 @@ html, body {
   border: 1px solid #696969;
   border-radius: 8px;
 }
+.boardDeleteField {
+  display: flex;
+  justify-content: flex-start;
+}
+.boardDeleteField > div > i {
+  padding-left: 8px;
+}
 .userList :first-child {
   display: flex;
   align-items: center;
@@ -172,7 +179,7 @@ a:visited {
 i {
   color: #575555;
 }
-.delete-mark:hover {
+.fa-trash-alt:hover, .fa-user-minus:hover {
   color: #991717;
 }
 .redirect-mark:hover {

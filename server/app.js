@@ -80,6 +80,36 @@ app.post('/shareBoard', ((req, res, statusCode) => {
   })
 }))
 
+app.delete('/board/:boardId', ((req, res) => {
+  let boardId = req.params.boardId;
+  sequelize.Board.destroy({
+    where: {
+      boardId
+    }
+  }).then(() => {
+    res.send()
+  }
+  ).catch(error => {
+    res.send(error);
+  })
+}))
+
+app.delete('/board/:sharedUserId/:sharedBoardId', ((req, res) => {
+  let userId = req.params.sharedUserId;
+  let boardId = req.params.sharedBoardId;
+  sequelize.BoardOwner.destroy({
+    where: {
+      userId,
+      boardId
+    }
+  }).then(() => {
+    res.send()
+  }
+  ).catch(error => {
+    res.send(error);
+  })
+}))
+
 app.get('/column/:boardId', ((req, res) => {
   const boardId = req.params.boardId;
   sequelize.Column.findAll().then(columns => {

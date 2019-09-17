@@ -10,7 +10,7 @@ class IdeasTableText extends React.Component {
                     <span>{value}</span><br></br>
                     <div className="keyAndButton">
                         <div></div>
-                        <i id={id} onClick={deleteButton} className="fas fa-trash-alt delete-mark"></i>
+                        <i id={id} onClick={deleteButton} className="fas fa-trash-alt"></i>
                     </div>
                 </div>
             </div>

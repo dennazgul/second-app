@@ -18,9 +18,22 @@ class BoardAppearance extends React.Component {
   }
 
   render() {
-    return (<div className="boardContainer" onClick={this.openBoard}>
-      {this.props.userId === this.state.boardData.userId ? null : <div className="alienBoard">чужая борда</div>}
-      <div className="boardAppearance">Имя борды: {this.state.boardData.name}</div>
+    return (<div className="boardContainer">
+      <div onClick={this.openBoard}>
+        {this.props.userId === this.state.boardData.userId ? null : <div><div className="alienBoard">чужая борда</div>
+        </div>}
+        <div className="boardAppearance">Имя борды: {this.state.boardData.name}</div>
+      </div>
+      <div class="boardDeleteField">
+        {this.props.userId === this.state.boardData.userId
+          ? <div>
+            <i id={this.state.boardData.id} onClick={this.props.deleteBoard} class="fas fa-trash-alt"></i>
+          </div>
+          :
+          <div>
+            <i id={this.state.boardData.id} onClick={this.props.refuseBoardAccess} class="fas fa-user-minus"></i>
+          </div>}
+      </div>
     </div>
     )
   }

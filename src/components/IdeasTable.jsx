@@ -56,7 +56,7 @@ class IdeasTable extends React.Component {
             })
             }
             <div className="columnBottom">
-                <div ><i id={this.props.colId} onClick={this.props.deleteColumn} className="fas fa-lg fa-trash-alt delete-mark"></i></div>
+                <div ><i id={this.props.colId} onClick={this.props.deleteColumn} className="fas fa-lg fa-trash-alt"></i></div>
                 <div >
                     <textarea placeholder="Добавить идею" value={this.state.body} onChange={this.setIdea}></textarea>
                     <button onClick={this.submit} disabled={!this.state.body}><i class="fas fa-plus"></i></button>
