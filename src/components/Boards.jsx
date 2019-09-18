@@ -47,7 +47,7 @@ class Boards extends React.Component {
   refuseBoardAccess = (e) => {
     let sharedUserId = this.state.userId;
     let sharedBoardId = e.target.id;
-    axios.delete(`http://localhost:1488/board/${sharedUserId}/${sharedBoardId}`).then(() => {
+    axios.delete(`http://localhost:1488/refuseBoardAccess/${sharedUserId}/${sharedBoardId}`).then(() => {
       this.setState({ boardArray: this.state.boardArray.filter(obj => obj.id != sharedBoardId) })
     }).catch((error) => console.warn("RESPONE", error));
   }

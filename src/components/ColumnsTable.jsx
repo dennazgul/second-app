@@ -2,6 +2,7 @@ import React from 'react';
 import '../App.css';
 import IdeasTable from './IdeasTable';
 import SharingUserList from './SharingUserList';
+import SharedUserList from './SharedUserList';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { withRouter } from "react-router";
@@ -12,7 +13,9 @@ class ColumnsTable extends React.Component {
         super(props);
         this.state = {
             columnArray: [],
-            userArray: [],
+            usersForSharingArray: [],
+            sharedUsersArray: [],
+            boardOwner: '',
             body: '',
             loginSearchBody: '',
         };
@@ -23,19 +26,21 @@ class ColumnsTable extends React.Component {
         this.setState({ body: event.target.value })
     }
 
-    submit = () => {
-        let user = {
+    addColumn = () => {
+        let column = {
             name: this.state.body,
+            creatorId: this.props.userId,
             boardId: this.props.match.params.id
         };
-        axios.post('http://localhost:1488/column', user).then((response) => {
+        axios.post('http://localhost:1488/column', column).then((response) => {
             let arc = Object.assign([], this.state.columnArray);
             arc.push(response.data)
             this.setState({ columnArray: arc, body: '' });
         }).catch((error) => console.log("RESPONSE", error));
     }
-    deleteColumn = (e) => {
-        let deletingId = Number(e.target.id);
+
+    deleteColumn = (id) => {
+        let deletingId = Number(id);
         axios.delete(`http://localhost:1488/column/${deletingId}`).then(() => {
             this.setState({ columnArray: this.state.columnArray.filter(obj => obj.id !== deletingId) })
         }).catch((error) => console.warn("RESPONE", error));
@@ -44,28 +49,37 @@ class ColumnsTable extends React.Component {
     handleSearch = (e) => {
         this.setState({ loginSearchBody: e.target.value }, () => {
             if (this.state.loginSearchBody.length > 2) {
-                axios.get(`http://localhost:1488/user/${this.state.loginSearchBody}/${this.props.userId}`).then((response) => {
-                    this.setState({ userArray: response.data }, () => { console.log(this.state.userArray) })
+                axios.get(`http://localhost:1488/user/${this.state.loginSearchBody}/${this.props.userId}/${this.props.match.params.id}`).then((response) => {
+                    this.setState({ usersForSharingArray: response.data })
                 }).catch((error) => console.warn("RESPONE", error));
             } else {
-                this.setState({ userArray: [] })
+                this.setState({ usersForSharingArray: [] })
             }
         })
     }
 
-    shareBoard = (e) => {
+    forbidBoard = (deletingId) => {
+        axios.delete(`http://localhost:1488/refuseBoardAccess/${deletingId}/${this.props.match.params.id}`).then(() => {
+            this.setState({ sharedUsersArray: this.state.sharedUsersArray.filter(obj => obj.id !== deletingId) })
+        }).catch((error) => console.warn("RESPONE", error))
+    }
+
+    shareBoard = (id, name) => {
         let sharingInfo = {
-            sharingUserId: e.target.id,
+            sharingUserId: id,
             boardId: this.props.match.params.id
         }
-        axios.post('http://localhost:1488/shareBoard', sharingInfo).then((response) =>
-            alert('Вы предоставили пользователю доступ к борде!')
+        axios.post('http://localhost:1488/shareBoard', sharingInfo).then((response) => {
+            let arc = Object.assign([], this.state.sharedUsersArray);
+            arc.push({ id, name })
+            this.setState({ usersForSharingArray: this.state.usersForSharingArray.filter(obj => obj.id != sharingInfo.sharingUserId), sharedUsersArray: arc })
+        }
         ).catch((error) => alert('не фартануло'));
     }
 
     componentDidMount() {
         axios.get(`http://localhost:1488/column/${this.props.match.params.id}`).then((response) => {
-            this.setState({ columnArray: response.data })
+            this.setState({ columnArray: response.data.columnArray, boardOwner: response.data.boardOwner, sharedUsersArray: response.data.sharedUsersArray })
         })
     }
 
@@ -78,7 +92,7 @@ class ColumnsTable extends React.Component {
     }*/
 
     render() {
-        const { columnArray, userArray } = this.state;
+        const { columnArray, usersForSharingArray, sharedUsersArray } = this.state;
         return (<div>
             <Link to="/boards">
                 <div className="returnToBoards"><i class="fas fa-list redirect-mark"></i></div>
@@ -88,6 +102,9 @@ class ColumnsTable extends React.Component {
                     {columnArray.map((post) => {
                         return (<div className="alignCenter" key={post.id}><div className="columnName">{post.name}</div>
                             <IdeasTable
+                                userId={this.props.userId}
+                                creatorId={post.creatorId}
+                                boardOwner={this.state.boardOwner}
                                 colId={post.id}
                                 deleteColumn={this.deleteColumn}
                             />
@@ -97,22 +114,36 @@ class ColumnsTable extends React.Component {
                     }
                     <div className="addColumn">
                         <textarea value={this.state.body} onChange={this.setIdea}></textarea>
-                        <div><button onClick={this.submit} disabled={!this.state.body}>Добавить колонку</button></div>
+                        <div><button onClick={this.addColumn} disabled={!this.state.body}>Добавить колонку</button></div>
                     </div>
                 </div>
                 <div>
-                    <input type="text" onChange={this.handleSearch} />
-                    {userArray.length ?
-                        userArray.map((post) => {
-                            return <SharingUserList
-                                id={post.id}
-                                name={post.name}
-                                shareBoard={this.shareBoard}
+                    <div>
+                        <span>Участники:</span>
+                        {sharedUsersArray.map((post) => {
+                            return <SharedUserList
+                                userId={this.props.userId}
+                                sharedUserId={post.id}
+                                ownerId={this.state.boardOwner.id}
+                                sharedUserName={post.name}
+                                forbidBoard={this.forbidBoard}
                             />
                         })
-                        :
-                        null
-                    }
+                        }
+                        <input type="text" onChange={this.handleSearch} /><span>Имя пользователя</span>
+                        {usersForSharingArray.length
+                            ?
+                            usersForSharingArray.map((post) => {
+                                return <SharingUserList
+                                    id={post.id}
+                                    name={post.name}
+                                    shareBoard={this.shareBoard}
+                                />
+                            })
+                            :
+                            null
+                        }
+                    </div>
                 </div>
             </div>
         </div>

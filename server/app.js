@@ -45,15 +45,23 @@ app.post('/login', ((req, res) => {
   })
 }))
 
-app.get('/user/:namePart/:userId', ((req, res) => {
+app.get('/user/:namePart/:userId/:boardId', ((req, res) => {
   const namePart = req.params.namePart;
   const userId = req.params.userId;
+  const boardId = req.params.boardId;
   sequelize.User.findAll().then(users => {
-    res.send(
-      users.filter((user) => { return user.name.indexOf(namePart) ? false : true }).filter((user) => { return user.id != userId })
+    sequelize.BoardOwner.findAll().then(fullBoards => {
+      res.send(
+        users.filter((user) => { return user.name.indexOf(namePart) ? false : true })
+          .filter((user) => { return user.id != userId })
+          .filter((user) => { return (fullBoards.filter((fullboard) => { return (fullboard.boardId == boardId && fullboard.userId == user.id) }).length ? false : true) })
+      )
+    }
     )
-  }
-  )
+  }).catch(error => {
+    res.statusCode = 404;
+    res.send(error);
+  })
 }));
 
 app.post('/board', ((req, res) => {
@@ -69,7 +77,7 @@ app.post('/board', ((req, res) => {
   })
 }))
 
-app.post('/shareBoard', ((req, res, statusCode) => {
+app.post('/shareBoard', ((req, res) => {
   let userId = req.body.sharingUserId;
   let boardId = req.body.boardId;
   sequelize.BoardOwner.create({ userId, boardId }).then(response => {
@@ -81,9 +89,25 @@ app.post('/shareBoard', ((req, res, statusCode) => {
 }))
 
 app.delete('/board/:boardId', ((req, res) => {
-  let boardId = req.params.boardId;
+  let id = req.params.boardId;
   sequelize.Board.destroy({
     where: {
+      id
+    }
+  }).then(() => {
+    res.send()
+  }
+  ).catch(error => {
+    res.send(error);
+  })
+}))
+
+app.delete('/forbidBoardAccess/:sharedUserId/:sharedBoardId', ((req, res) => {
+  let userId = req.params.sharedUserId;
+  let boardId = req.params.sharedBoardId;
+  sequelize.BoardOwner.destroy({
+    where: {
+      userId,
       boardId
     }
   }).then(() => {
@@ -94,7 +118,7 @@ app.delete('/board/:boardId', ((req, res) => {
   })
 }))
 
-app.delete('/board/:sharedUserId/:sharedBoardId', ((req, res) => {
+app.delete('/refuseBoardAccess/:sharedUserId/:sharedBoardId', ((req, res) => {
   let userId = req.params.sharedUserId;
   let boardId = req.params.sharedBoardId;
   sequelize.BoardOwner.destroy({
@@ -112,16 +136,26 @@ app.delete('/board/:sharedUserId/:sharedBoardId', ((req, res) => {
 
 app.get('/column/:boardId', ((req, res) => {
   const boardId = req.params.boardId;
-  sequelize.Column.findAll().then(columns => {
-    res.send(columns.filter((column) => { return column.boardId == boardId }))
-  }
-  )
+  sequelize.BoardOwner.findAll({ where: { boardId } }).then(fullboards => {
+    sequelize.Column.findAll().then(columns => {
+      sequelize.Board.findOne({ where: { id: boardId } }).then(board => {
+        sequelize.User.findAll().then(users => {
+          let columnArray = columns.filter((column) => column.boardId == boardId)
+          let boardOwner = users.find(user => user.id == board.userId)
+          let sharedUsersArray = users.filter((user) => 
+          fullboards.filter((fullboard) => user.id == fullboard.userId ).length ? true : false )
+          res.send({ columnArray, boardOwner, sharedUsersArray })
+        })
+      })
+    })
+  })
 }));
 
 app.post('/column', ((req, res) => {
   let name = req.body.name;
+  let creatorId = req.body.creatorId;
   let boardId = req.body.boardId;
-  sequelize.Column.create({ name, boardId }).then(cols => {
+  sequelize.Column.create({ name, creatorId, boardId }).then(cols => {
     res.send(cols)
   }).catch(error => {
     res.statusCode = 404;
@@ -154,8 +188,9 @@ app.get('/card/:colId', ((req, res) => {
 
 app.post('/card', ((req, res) => {
   let value = req.body.value;
-  let colId = req.body.colId
-  sequelize.Card.create({ value: value, columnId: colId }).then(cards => {
+  let creatorId = req.body.creatorId;
+  let columnId = req.body.colId
+  sequelize.Card.create({ value, creatorId, columnId }).then(cards => {
     res.send(cards)
   }).catch(error => {
     res.statusCode = 404;

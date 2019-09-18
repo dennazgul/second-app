@@ -1,20 +1,25 @@
 import React from 'react';
 import '../App.css';
 
-class IdeasTableText extends React.Component {
-    render() {
-        const {id, deleteButton, value} = this.props;
+function IdeasTableText (props) {
+        const {cardId, deleteCard, value} = props;
+        const handleClick = () => {
+            deleteCard(cardId)
+        }
         return (
             <div>
                 <div className="tableContent">
                     <span>{value}</span><br></br>
                     <div className="keyAndButton">
                         <div></div>
-                        <i id={id} onClick={deleteButton} className="fas fa-trash-alt"></i>
+                        {props.creatorId == props.userId || props.userId == props.boardOwner.id
+                        ?
+                        <i onClick={handleClick} className="fas fa-trash-alt"></i>
+                        :
+                        null}
                     </div>
                 </div>
             </div>
         )
     }
-}
 export default IdeasTableText;

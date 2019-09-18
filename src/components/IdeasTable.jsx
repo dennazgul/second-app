@@ -13,26 +13,30 @@ class IdeasTable extends React.Component {
         };
 
     }
+    handleClick = () => {
+        this.props.deleteColumn(this.props.colId)
+    }
 
     setIdea = (event) => {
         this.setState({ body: event.target.value })
     }
 
-    submit = () => {
-        let user = {
+    addTable = () => {
+        let card = {
             value: this.state.body,
+            creatorId: this.props.userId,
             colId: this.props.colId,
         };
         //debugger
-        axios.post('http://localhost:1488/card', user).then((response) => {
+        axios.post('http://localhost:1488/card', card).then((response) => {
             let arc = Object.assign([], this.state.postArray);
             arc.push(response.data)
             this.setState({ postArray: arc, body: '' });
         }).catch((error) => console.log("RESPONSE", error));
     }
 
-    deleteTable = (e) => {
-        let deletingId = Number(e.target.id);
+    deleteCard = (id) => {
+        let deletingId = Number(id);
         axios.delete(`http://localhost:1488/card/${deletingId}`).then(() => {
             this.setState({ postArray: this.state.postArray.filter(obj => obj.id !== deletingId) })
         }).catch((error) => console.warn("RESPONE", error));
@@ -49,17 +53,25 @@ class IdeasTable extends React.Component {
         return (<div className="ideasTable">
             {postArray.map((post) => {
                 return (<div key={post.id}><IdeasTableText
+                    userId={this.props.userId}
+                    creatorId={post.creatorId}
+                    boardOwner={this.props.boardOwner}
                     value={post.value}
-                    id={post.id}
-                    deleteButton={this.deleteTable} /></div>
+                    cardId={post.id}
+                    deleteCard={this.deleteCard} /></div>
                 )
             })
             }
             <div className="columnBottom">
-                <div ><i id={this.props.colId} onClick={this.props.deleteColumn} className="fas fa-lg fa-trash-alt"></i></div>
-                <div >
+                <div>{this.props.creatorId == this.props.userId || this.props.userId == this.props.boardOwner.id
+                    ?
+                    <i onClick={this.handleClick} className="fas fa-lg fa-trash-alt"></i>
+                    :
+                    null}
+                </div>
+                <div>
                     <textarea placeholder="Добавить идею" value={this.state.body} onChange={this.setIdea}></textarea>
-                    <button onClick={this.submit} disabled={!this.state.body}><i class="fas fa-plus"></i></button>
+                    <button onClick={this.addTable} disabled={!this.state.body}><i class="fas fa-plus"></i></button>
                 </div>
             </div>
         </div>

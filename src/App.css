@@ -55,12 +55,19 @@ padding-right: 8px;
   padding: 12px;
 }
 .columnsContainer + div {
+  padding-top: 39px;
+}
+.columnsContainer + div > div {
   border: 1px solid #696969;
   border-radius: 8px;
   background-color: #bdb9ae;
 }
-.columnsContainer + div > input {
+.columnsContainer + div > div > span {
+  padding-left: 8px;
+}
+.columnsContainer + div > div > input {
   margin-left: 4px;
+  margin-bottom: 4px;
   padding-left: 4px;
   border: 1px solid #696969;
   border-radius: 4px;
@@ -179,11 +186,14 @@ a:visited {
 i {
   color: #575555;
 }
-.fa-trash-alt:hover, .fa-user-minus:hover {
+.fa-trash-alt:hover, .fa-user-minus:hover, .fa-user-times:hover {
   color: #991717;
 }
-.redirect-mark:hover {
+.redirect-mark:hover, button:enabled > .fa-plus:hover{
   color: #3866ab;
+}
+.fa-star {
+  color: #B8860B
 }
 button:disabled > i {
   color: #c9bdbd;

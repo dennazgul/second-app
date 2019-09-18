@@ -7,6 +7,10 @@ const Column = sequelize.define('column', {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    creatorId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
     boardId: {
       type: Sequelize.INTEGER,
       allowNull: false,
