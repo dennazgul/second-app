@@ -1,14 +1,18 @@
 const Sequelize = require('sequelize');
 
 module.exports = function cardModel(sequelize) {
-const Card = sequelize.define('card', {
+const Board = sequelize.define('board', {
     // attributes
-    value: Sequelize.STRING,
-    creatorId: {
+    id: {
       type: Sequelize.INTEGER,
-      allowNull: false,
-    }, 
-    columnId: {
+      autoIncrement: true,
+      primaryKey: true,
+  },
+    name: {
+      type: Sequelize.STRING,
+      unique: true
+    },
+    userId: {
       type: Sequelize.INTEGER,
       allowNull: false,
     }, 
@@ -16,5 +20,5 @@ const Card = sequelize.define('card', {
     timestamps: false,
     // options
   });
-  return Card;
+  return Board;
 }

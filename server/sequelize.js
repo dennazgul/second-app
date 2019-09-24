@@ -1,8 +1,10 @@
 const Sequelize = require('sequelize');
 const cardModel = require('./models/card');
 const columnModel = require('./models/column');
-const roleModel = require('./models/role');
 const userModel = require('./models/user');
+const boardModel = require('./models/board');
+const boardOwnerModel = require('./models/boardOwner');
+const historyModel = require('./models/history');
 const sequelize = new Sequelize('trello', 'postgres', 'admin', {
     host: 'localhost',
     dialect: 'postgres'
@@ -10,10 +12,15 @@ const sequelize = new Sequelize('trello', 'postgres', 'admin', {
 
  const Card = cardModel(sequelize);
  const Column = columnModel(sequelize);
- const Role = roleModel(sequelize);
  const User = userModel(sequelize);
+ const Board = boardModel(sequelize);
+ const BoardOwner = boardOwnerModel(sequelize);
+ const History = historyModel(sequelize);
+ History.hasMany(Board)
+ Board.hasMany(Column);
  Column.hasMany(Card);
- Role.hasMany(User);
+ User.belongsToMany(Board, {through: BoardOwner});
+ Board.belongsToMany(User, {through: BoardOwner});
 
 function runSequelize() {
         sequelize.authenticate()
@@ -27,4 +34,4 @@ function runSequelize() {
 
 }
 
-module.exports = {Card, Column, runSequelize};
+module.exports = {Card, Column, Board, User, BoardOwner, runSequelize};

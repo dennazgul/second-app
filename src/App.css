@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Mountains+of+Christmas&display=swap');
-
+html, body {
+  height: 100%;
+  color: #242323;
+}
+#root {
+  height: 100%;
+  overflow: auto;
+  background: linear-gradient(#dfe4ed, #9198e5);
+}
 .headerTop {
   background-color: #a19422;
   text-align: center;
@@ -8,32 +16,273 @@
   background-color: #cebf35;
   text-align: center;
   font-family: 'Mountains of Christmas', cursive;
-  color: #2c2911;
 }
-.bodyContainer {
+.userList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 4px 16px;
+  margin: 4px 4px;
+  border: 1px solid #AFAF58;
+  border-radius: 8px;
+}
+.boardDeleteField {
+  display: flex;
+  justify-content: flex-start;
+}
+.boardDeleteField > div > i {
+  padding-left: 8px;
+}
+.userList :first-child {
+  display: flex;
+  align-items: center;
+}
+.userList :last-child > span {
+padding-right: 8px;
+}
+.userList :last-child {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.columnsAndMenuContainer {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+}
+.columnsContainer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-column-gap: 16px;
-  background-color: rgb(248, 242, 190);
-  padding: 8px;
+  grid-column-gap: 6px;
+  padding: 12px;
+}
+.columnsContainer + div {
+  padding-top: 39px;
+}
+.columnsContainer + div > div {
+  border: 1px solid #AFAF58;
+  border-radius: 8px;
+  background-color: #DFDFD7;
+}
+.columnsContainer + div > div > span {
+  padding-left: 8px;
+}
+input {
+  border: 1px solid #AFAF58;
+  border-radius: 4px;
+}
+.columnsContainer + div > div > input {
+  margin-left: 4px;
+  margin-bottom: 4px;
+  padding-left: 4px;
+}
+.columnBottom {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+.columnBottom :first-child {
+  display: flex;
+  align-items: flex-end;
+}
+.columnBottom :last-child {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  text-align: right;
+}
+.columnName {
+  font-weight: 600;
+  font-size: 1.25em;
+}
 
+.addColumn {
+  padding-top: 1.87em;
+  text-align: center;
+}
+.addColumn > textarea {
+  min-width: 18em;
 }
 .tableName {
   font-weight: 600;
   text-align: center;
 }
-.ideasTable {
-  border-radius: 8px;
-  padding: 8px;
-  background-color: #bdb9ae;
+.addButton {
+  margin-left: 2px;
+  border: 1px solid #AFAF58;
+  border-radius: 4px;
+  background-color: #DFDFD7;
+  color: #242323;
+}
+.addButton:disabled {
+  border: 1px solid #F9F1F1;
+  background-color: #F9F1F1;
+  color: #A9A99E;
 }
 .tableContent {
   border-radius: 8px;
   padding: 3px;
-  background-color: #969695;
-  margin-bottom: 8px; 
+  background-color: #DFDFB2;
+  margin-bottom: 8px;
+  text-align: left;
+  max-width: 360px;
+  word-wrap: break-word;
+  border: 1px solid #AFAF58;
 }
 .keyAndButton {
-  display: grid;
-  grid-template-columns: 5fr 1fr;
+text-align: right;
+}
+.keyAndButton > i {
+  padding-right: 4px;
+}
+.logRegButton {
+  border: 1px solid black;
+  margin-left: 8px;
+  padding: 0 14px;
+  border-radius: 8px;
+  
+}
+.returnToBoards {
+  display: inline-block;
+  margin-left: 0.5em;
+  margin-top: 0.5em;
+  border:1px solid #696969;
+  border-radius: 6px;
+  padding: 3px 8px 3px 3px;
+}
+.boardTable {
+  text-align: center;
+}
+.underBoardTable {
+  margin-top: 20px;
+  text-align: center;
+}
+.underBoardTable + div {
+  text-align: center;
+}
+.boardContainer {
+  display: inline-block;
+  border: 1px solid #AFAF58;
+  border-radius: 8px;
+  text-align: center;
+  vertical-align: center;
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 1.5em;
+  background-color: #DFDFD7;
+}
+.alienBoard {
+  position: absolute;
+  font-weight: 400;
+  font-size: 0.93em;
+  padding-left: 4px;
+  color: #756767;
+}
+.boardAppearance {
+  display: flex;
+  height: 120px;
+  min-width: 360px;
+  justify-content: center;
+  align-items: center; 
+}
+.addBoard {
+  min-height: 120px;
+  min-width: 360px;
+}
+.ideasTable {
+  border-radius: 8px;
+  padding: 8px;
+  background-color: #DFDFD7;
+  border: 1px solid #AFAF58;
+}
+
+.alignCenter {
+  text-align: center;
+}
+
+a:visited {
+  text-decoration: none;
+  color: #242323;
+}
+i {
+  color: #575555;
+}
+.fa-trash-alt:hover, .fa-user-minus:hover, .fa-user-times:hover, .fa-times:hover {
+  color: #991717;
+}
+.redirect-mark:hover, button:enabled > .fa-plus:hover, .fa-edit:hover, .fa-save:hover, .fa-book-open:hover {
+  color: #3866ab;
+}
+.fa-star {
+  color: #B8860B
+}
+button:disabled > i {
+  color: #c9bdbd;
+}
+textarea {
+  border: none;
+  border-radius: 4px;
+  background: #Fff;
+}
+textarea:focus, input:focus {
+  outline: none;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px 0 #B3B34A;
+}
+.notifContainer {
+position: absolute;
+right: 10px;
+}
+.notifContainer > div {
+  opacity: 0.7;
+  display: inline-block;
+  text-align: center;
+}
+.notifContainer > div > span > div.notification-success {
+  background-color: #D8DC5B;
+  min-width: 240px;
+  height: 100px;
+  border-radius: 8px;
+}
+.notifContainer > div > span > div.notification-error {
+  background-color: #F65858;
+  min-width: 240px;
+  height: 100px;
+  border-radius: 8px;
+}
+.notifContainer > h4 {
+  margin-top: 0;
+}
+.modalBackground {
+  position: absolute;
+  background-color: black;
+  top: 0;
+  left: 0;
+  opacity: 0.4;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.modalDialog {
+  background: #fff;
+  border: 1px solid #AFAF58;
+  border-radius: 5px;
+  left: 42%;
+  top: 40%;
+  height: 100px;
+  width: 300px;
+  text-align:center;
+  position: fixed;
+  z-index: 1;
+}
+.modalDialog > .fa-times {
+  position: absolute;
+  right: 4px;
+}
+.modalDialog > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 4px;
+  }
+.modalDialog > div > .fa-save {
+font-size: 1.25em;
+padding-left: 4px;
 }

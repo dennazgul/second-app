@@ -1,23 +1,23 @@
 const Sequelize = require('sequelize');
 
-module.exports = function columnModel(sequelize) {
-const Column = sequelize.define('column', {
+module.exports = function historyModel(sequelize) {
+const History = sequelize.define('history', {
     // attributes
-    name: {
-      type: Sequelize.STRING,
+    messageCode: {
+      type: Sequelize.INTEGER,
       allowNull: false,
     },
-    creatorId: {
-      type: Sequelize.INTEGER,
+    userName: {
+      type: Sequelize.STRING,
       allowNull: false,
     },
     boardId: {
       type: Sequelize.INTEGER,
       allowNull: false,
-    }
+    },
   }, {
     timestamps: false,
     // options
   });
-  return Column;
+ return History;
 }

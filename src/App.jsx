@@ -1,25 +1,59 @@
 import React from 'react';
 import './App.css';
-import { Link, BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Border from './components/Border';
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import Boards from './components/Boards';
+import MainHeader from './components/MainHeader';
+import Register from './components/Register';
+import ColumnsTable from './components/ColumnsTable';
 
-var obj = {
-	id: "awesome",
-	cool: function coolFn() {
-		console.log( this.id );
-	}
-};
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      boardArray: [],
+      userId: 0,
+      userName: '',
+      regAbler: false
+    }
+  }
+  sendData = (userData) => {
+    this.setState({ boardArray: userData.boardList, userId: userData.userId, userName: userData.userName })
+  }
+  sendUser = (user) => {
+    this.setState({ boardArray: [], userId: user.id, userName: user.name })
+  }
 
-var id = "not awesome";
+  regOrLogin = (e) => {
+    if (e.target.id == 0) {
+      this.setState({ regAbler: true })
+    } else {
+      this.setState({ regAbler: false })
+    }
+  }
+  logout = () => {
+    this.setState({ userId: 0, userName: '' })
+  }
 
-obj.cool(); // awesome
+  addBoard = (boardArray) => {
+    this.setState({ boardArray})
+  }
 
-setTimeout( obj.cool, 100 ); // not awesome
-function App() {
-  return (
-    <Router>
-        <Route component={Border} />
-    </Router>
-  );
+  render() {
+    return (
+      <Router>
+        <MainHeader
+          regOrLogin={this.regOrLogin}
+          logout={this.logout}
+          userId={this.state.userId}
+          userName={this.state.userName}
+        />
+        <Route path="/login" render={() => <Register sendData={this.sendData} regAbler={this.state.regAbler} />} />
+        <Route path="/registration" render={() => <Register sendUser={this.sendUser} regAbler={this.state.regAbler} />} />
+        <Route path="/boards" render={() => <Boards addBoard={this.addBoard} board={this.state.boardArray} userId={this.state.userId} />} />
+        <Route path="/board/:id" render={() => <ColumnsTable userId={this.state.userId}/>} />
+        <Redirect to="/" />
+      </Router>
+    );
+  }
 }
 export default App;

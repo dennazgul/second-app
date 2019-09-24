@@ -5,12 +5,13 @@ const User = sequelize.define('user', {
     // attributes
     name: {
       type: Sequelize.STRING,
-      unique: true
-    },
-    roleId: {
-      type: Sequelize.INTEGER,
+      unique: true,
       allowNull: false,
-    }, 
+    },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
   }, {
     timestamps: false,
     // options

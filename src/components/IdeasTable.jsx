@@ -1,112 +1,81 @@
 import React from 'react';
-import { BrowserRouter } from "react-router-dom";
 import '../App.css';
 import IdeasTableText from './IdeasTableText';
-import { BrowserRouter as Route } from "react-router-dom";
 import axios from 'axios';
-import { REGISTER } from '../constants/urlConstsants';
-import { reject } from 'q';
 
 class IdeasTable extends React.Component {
     constructor(props) {
         super(props);
-        this.keyCreator = 1;
         this.state = {
             postArray: [],
             body: '',
-            columnBody: '',
-            columnArray: [{ id: 1, name: 'gg' }, { id: 2, name: 'wp' }, { id: 3, name: 'lol' }]
 
         };
 
+    }
+    handleClick = () => {
+        this.props.deleteColumn(this.props.colId)
     }
 
     setIdea = (event) => {
         this.setState({ body: event.target.value })
     }
-    baseInfo = (response) => {
-        this.setState({ postArray: response.data })
-    }
-    submit = () => {
-        let user = {
+
+    addTable = () => {
+        let card = {
             value: this.state.body,
+            creatorId: this.props.userId,
+            colId: this.props.colId,
         };
-        this.state.body = ''
         //debugger
-        axios.post('http://localhost:1488/', user).then((response) => {
+        axios.post('http://localhost:1488/card', card).then((response) => {
             let arc = Object.assign([], this.state.postArray);
             arc.push(response.data)
-            this.setState({ postArray: arc });
+            this.setState({ postArray: arc, body: '' });
         }).catch((error) => console.log("RESPONSE", error));
     }
 
-    delete = (e) => {
-        let deletingId = e.target.id;
-        axios.delete(`http://localhost:1488/228/${e.target.id}`).then(() => {
-            this.setState({ postArray: this.state.postArray.filter(obj => obj.id != deletingId) })
+    deleteCard = (id) => {
+        let deletingId = Number(id);
+        axios.delete(`http://localhost:1488/card/${deletingId}`).then(() => {
+            this.setState({ postArray: this.state.postArray.filter(obj => obj.id !== deletingId) })
         }).catch((error) => console.warn("RESPONE", error));
     }
 
     componentDidMount() {
-        axios.get('http://localhost:1488/').then((response) => {
-            this.setState({ columnArray: response.data })
-            axios.get('http://localhost:1488/sm').then((response) => {
-            this.setState({ postArray: response.data }).catch((error) => console.warn("RESPONE", error))
-        }).catch((error) => console.warn("RESPONE", error));
-    })}
+        axios.get(`http://localhost:1488/card/${this.props.colId}`).then((response) => {
+            this.setState({ postArray: response.data })
+        }).catch((error) => console.warn("RESPONE", error))
+    }
 
     render() {
         const { postArray } = this.state;
-        const { columnArray } = this.state;
-        return (
-            <div>
-                {console.log(this.state.postArray)}
-                {console.log(this.state.columnArray)}
-                {this.state.columnArray.map((col) => {
-                    return (
-                        <div><div>{col.name}</div>
-                            {postArray.map((post) => {
-                                return (<IdeasTableText
-                                    colId={col.id}
-                                    cardId={post.columnId}
-                                    mainText={post.value}
-                                    id={post.id}
-                                    delete={this.delete} />
-                                )
-                            })
-                            }
-                                            <textarea value={this.state.body} onChange={this.setIdea}></textarea>
-                <button onClick={this.submit} disabled={!this.state.body}>Добавить идею</button>
-                        </div>
-                    )
-                })}
-
-                <div><button onClick disabled>Добавить колонку</button></div>
+        return (<div className="ideasTable">
+            {postArray.map((post) => {
+                return (<div key={post.id}><IdeasTableText
+                    userId={this.props.userId}
+                    creatorId={post.creatorId}
+                    boardOwner={this.props.boardOwner}
+                    value={post.value}
+                    cardId={post.id}
+                    deleteCard={this.deleteCard} /></div>
+                )
+            })
+            }
+            <div className="columnBottom">
+                <div>{this.props.creatorId == this.props.userId || this.props.userId == this.props.boardOwner.id
+                    ?
+                    <i onClick={this.handleClick} className="fas fa-lg fa-trash-alt"></i>
+                    :
+                    null}
+                </div>
+                <div>
+                    <textarea placeholder="Добавить идею" value={this.state.body} onChange={this.setIdea}></textarea>
+                    <button className="addButton" onClick={this.addTable} disabled={!this.state.body}><i class="fas fa-plus"></i></button>
+                </div>
             </div>
-
+        </div>
         )
     }
-    /* render() {
-         const { postArray } = this.state;
-         return (
-             <div className="ideasTable">
-                 <div className="tableName" >Список идей</div>
-                 {postArray.map((post) => {
-                     return (<IdeasTableText
-                         mainText={post.mainText}
-                         id={post.id}
-                         delete={this.delete} />
-                     )
-                 })
-                 }
-                 {console.log(this.state)}
-                 
-                 <textarea value={this.state.body} onChange={this.setIdea}></textarea>
-                 <button onClick={this.submit} disabled={!this.state.body}>Добавить идею</button>
-                 <div><button onClick disabled>Добавить колонку</button></div>
-             </div>
-             
-         )
-     }*/
 }
 export default IdeasTable;
