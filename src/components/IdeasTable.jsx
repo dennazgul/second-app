@@ -71,7 +71,7 @@ class IdeasTable extends React.Component {
                 </div>
                 <div>
                     <textarea placeholder="Добавить идею" value={this.state.body} onChange={this.setIdea}></textarea>
-                    <button onClick={this.addTable} disabled={!this.state.body}><i class="fas fa-plus"></i></button>
+                    <button className="addButton" onClick={this.addTable} disabled={!this.state.body}><i class="fas fa-plus"></i></button>
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ const columnModel = require('./models/column');
 const userModel = require('./models/user');
 const boardModel = require('./models/board');
 const boardOwnerModel = require('./models/boardOwner');
+const historyModel = require('./models/history');
 const sequelize = new Sequelize('trello', 'postgres', 'admin', {
     host: 'localhost',
     dialect: 'postgres'
@@ -14,8 +15,10 @@ const sequelize = new Sequelize('trello', 'postgres', 'admin', {
  const User = userModel(sequelize);
  const Board = boardModel(sequelize);
  const BoardOwner = boardOwnerModel(sequelize);
- Column.hasMany(Card);
+ const History = historyModel(sequelize);
+ History.hasMany(Board)
  Board.hasMany(Column);
+ Column.hasMany(Card);
  User.belongsToMany(Board, {through: BoardOwner});
  Board.belongsToMany(User, {through: BoardOwner});
 

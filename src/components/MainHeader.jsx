@@ -7,7 +7,8 @@ class MainHeader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            regAbler: true
+            regAbler: true,
+            sasat: new Date()
         };
 
     }
@@ -27,7 +28,7 @@ class MainHeader extends React.Component {
                         <img src={require('../assets/image.png')} alt={'coolPic'} width="36px"></img>
                     </div>
                     {this.props.userId ?
-                        <div className="headerBot"><span className="logRegButton" onClick={this.logout}><i class="fas fa-sign-out-alt redirect-mark"></i></span></div>
+                        <div className="headerBot"><span className="logRegButton" onClick={this.logout}><i className="fas fa-sign-out-alt redirect-mark"></i></span></div>
                         :
                         <div className="headerBot">
                             <Link to="/registration">
@@ -36,6 +37,7 @@ class MainHeader extends React.Component {
                             <Link to="/login">
                                 <span className="logRegButton" id="1" onClick={this.props.regOrLogin}>Вход</span>
                             </Link>
+                            {console.log(this.state.sasat.toString())}
                         </div>
                     }
 

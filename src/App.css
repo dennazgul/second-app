@@ -22,7 +22,7 @@ html, body {
   grid-template-columns: 1fr 1fr;
   padding: 4px 16px;
   margin: 4px 4px;
-  border: 1px solid #696969;
+  border: 1px solid #AFAF58;
   border-radius: 8px;
 }
 .boardDeleteField {
@@ -58,19 +58,21 @@ padding-right: 8px;
   padding-top: 39px;
 }
 .columnsContainer + div > div {
-  border: 1px solid #696969;
+  border: 1px solid #AFAF58;
   border-radius: 8px;
-  background-color: #bdb9ae;
+  background-color: #DFDFD7;
 }
 .columnsContainer + div > div > span {
   padding-left: 8px;
+}
+input {
+  border: 1px solid #AFAF58;
+  border-radius: 4px;
 }
 .columnsContainer + div > div > input {
   margin-left: 4px;
   margin-bottom: 4px;
   padding-left: 4px;
-  border: 1px solid #696969;
-  border-radius: 4px;
 }
 .columnBottom {
   display: grid;
@@ -102,18 +104,33 @@ padding-right: 8px;
   font-weight: 600;
   text-align: center;
 }
-
+.addButton {
+  margin-left: 2px;
+  border: 1px solid #AFAF58;
+  border-radius: 4px;
+  background-color: #DFDFD7;
+  color: #242323;
+}
+.addButton:disabled {
+  border: 1px solid #F9F1F1;
+  background-color: #F9F1F1;
+  color: #A9A99E;
+}
 .tableContent {
   border-radius: 8px;
   padding: 3px;
-  background-color: #969695;
+  background-color: #DFDFB2;
   margin-bottom: 8px;
   text-align: left;
   max-width: 360px;
-  word-wrap: break-word; 
+  word-wrap: break-word;
+  border: 1px solid #AFAF58;
 }
 .keyAndButton {
 text-align: right;
+}
+.keyAndButton > i {
+  padding-right: 4px;
 }
 .logRegButton {
   border: 1px solid black;
@@ -142,13 +159,14 @@ text-align: right;
 }
 .boardContainer {
   display: inline-block;
-  border: 1px solid green;
+  border: 1px solid #AFAF58;
+  border-radius: 8px;
   text-align: center;
   vertical-align: center;
   margin-top: 8px;
   font-weight: 600;
   font-size: 1.5em;
-  background-color: #A8BCD1;
+  background-color: #DFDFD7;
 }
 .alienBoard {
   position: absolute;
@@ -171,8 +189,8 @@ text-align: right;
 .ideasTable {
   border-radius: 8px;
   padding: 8px;
-  background-color: #bdb9ae;
-  border: 1px solid #696969;
+  background-color: #DFDFD7;
+  border: 1px solid #AFAF58;
 }
 
 .alignCenter {
@@ -186,10 +204,10 @@ a:visited {
 i {
   color: #575555;
 }
-.fa-trash-alt:hover, .fa-user-minus:hover, .fa-user-times:hover {
+.fa-trash-alt:hover, .fa-user-minus:hover, .fa-user-times:hover, .fa-times:hover {
   color: #991717;
 }
-.redirect-mark:hover, button:enabled > .fa-plus:hover{
+.redirect-mark:hover, button:enabled > .fa-plus:hover, .fa-edit:hover, .fa-save:hover, .fa-book-open:hover {
   color: #3866ab;
 }
 .fa-star {
@@ -199,6 +217,72 @@ button:disabled > i {
   color: #c9bdbd;
 }
 textarea {
-  border: 1px solid #696969;
+  border: none;
   border-radius: 4px;
+  background: #Fff;
+}
+textarea:focus, input:focus {
+  outline: none;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px 0 #B3B34A;
+}
+.notifContainer {
+position: absolute;
+right: 10px;
+}
+.notifContainer > div {
+  opacity: 0.7;
+  display: inline-block;
+  text-align: center;
+}
+.notifContainer > div > span > div.notification-success {
+  background-color: #D8DC5B;
+  min-width: 240px;
+  height: 100px;
+  border-radius: 8px;
+}
+.notifContainer > div > span > div.notification-error {
+  background-color: #F65858;
+  min-width: 240px;
+  height: 100px;
+  border-radius: 8px;
+}
+.notifContainer > h4 {
+  margin-top: 0;
+}
+.modalBackground {
+  position: absolute;
+  background-color: black;
+  top: 0;
+  left: 0;
+  opacity: 0.4;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.modalDialog {
+  background: #fff;
+  border: 1px solid #AFAF58;
+  border-radius: 5px;
+  left: 42%;
+  top: 40%;
+  height: 100px;
+  width: 300px;
+  text-align:center;
+  position: fixed;
+  z-index: 1;
+}
+.modalDialog > .fa-times {
+  position: absolute;
+  right: 4px;
+}
+.modalDialog > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 4px;
+  }
+.modalDialog > div > .fa-save {
+font-size: 1.25em;
+padding-left: 4px;
 }

@@ -6,6 +6,7 @@ import SharedUserList from './SharedUserList';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { withRouter } from "react-router";
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 
 class ColumnsTable extends React.Component {
@@ -60,8 +61,12 @@ class ColumnsTable extends React.Component {
 
     forbidBoard = (deletingId) => {
         axios.delete(`http://localhost:1488/refuseBoardAccess/${deletingId}/${this.props.match.params.id}`).then(() => {
-            this.setState({ sharedUsersArray: this.state.sharedUsersArray.filter(obj => obj.id !== deletingId) })
-        }).catch((error) => console.warn("RESPONE", error))
+            this.setState({ sharedUsersArray: this.state.sharedUsersArray.filter(obj => obj.id !== deletingId) },
+                () => { NotificationManager.success('Доступ отменён', <i class="fas fa-user-minus"></i>, 800) }
+            )
+        }).catch((error) => {
+            NotificationManager.error('Ошибка', <i class="fas fa-exclamation-triangle"></i>, 800)
+        })
     }
 
     shareBoard = (id, name) => {
@@ -72,9 +77,18 @@ class ColumnsTable extends React.Component {
         axios.post('http://localhost:1488/shareBoard', sharingInfo).then((response) => {
             let arc = Object.assign([], this.state.sharedUsersArray);
             arc.push({ id, name })
-            this.setState({ usersForSharingArray: this.state.usersForSharingArray.filter(obj => obj.id != sharingInfo.sharingUserId), sharedUsersArray: arc })
+            this.setState({ usersForSharingArray: this.state.usersForSharingArray.filter(obj => obj.id != sharingInfo.sharingUserId), sharedUsersArray: arc },
+                () => {
+                    NotificationManager.success('Доступ одобрен', <i class="fas fa-user-check"></i>, 800)
+                })
         }
-        ).catch((error) => alert('не фартануло'));
+        ).catch((error) => {
+            NotificationManager.error('Ошибка', <i class="fas fa-exclamation-triangle"></i>, 800)
+        });
+    }
+
+    callMod = () => {
+        console.log('ff')
     }
 
     componentDidMount() {
@@ -97,6 +111,7 @@ class ColumnsTable extends React.Component {
             <Link to="/boards">
                 <div className="returnToBoards"><i class="fas fa-list redirect-mark"></i></div>
             </Link>
+            <div class="notifContainer"><NotificationContainer /></div>
             <div className="columnsAndMenuContainer">
                 <div className="columnsContainer">
                     {columnArray.map((post) => {
@@ -114,7 +129,7 @@ class ColumnsTable extends React.Component {
                     }
                     <div className="addColumn">
                         <textarea value={this.state.body} onChange={this.setIdea}></textarea>
-                        <div><button onClick={this.addColumn} disabled={!this.state.body}>Добавить колонку</button></div>
+                        <div><button className="addButton" onClick={this.addColumn} disabled={!this.state.body}>Добавить колонку</button></div>
                     </div>
                 </div>
                 <div>

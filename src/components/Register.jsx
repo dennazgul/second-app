@@ -7,8 +7,7 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fieldInfo: [{ login: '', password: '', passwordrep: '' }],
-            getLogged: []
+            fieldInfo: [{ login: '', password: '', passwordrep: '' }]
         };
     }
     handleTextareaChange = (event) => {
@@ -52,7 +51,7 @@ class Login extends React.Component {
                     <input value={this.state.fieldInfo.password} type="password" name="password" placeholder="введите пароль" onChange={this.handleTextareaChange} cols="40" rows="3"></input>
                     {this.props.regAbler ? <input value={this.state.fieldInfo.passwordrep} name="passwordrep"
                         placeholder="введите пароль" onChange={this.handleTextareaChange} cols="40" rows="3"></input> : null}
-                    <button onClick={this.submit}>Отправить</button>
+                    <button class="addButton" onClick={this.submit}>Отправить</button>
                 </div>
             </div>
         )

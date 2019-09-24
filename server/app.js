@@ -77,6 +77,18 @@ app.post('/board', ((req, res) => {
   })
 }))
 
+app.post('/editCard', ((req, res) => {
+  let id = req.body.id
+  let value = req.body.value;
+  sequelize.Card.update({ value }, {where: {id}}).then(card => {
+      res.send(card)
+    }).catch(error => {
+    res.statusCode = 404;
+    res.send(error);
+  })
+}))
+
+
 app.post('/shareBoard', ((req, res) => {
   let userId = req.body.sharingUserId;
   let boardId = req.body.boardId;
